@@ -1,5 +1,5 @@
 const xlsx = require('xlsx');
-const wb = xlsx.readFile('D:/JS/NodeJS/alexa-client-pt/src/utils/SampleExcel.xlsx');
+const wb = xlsx.readFile('./public/js/SampleExcel.xlsx');
 const sheetNames = wb.SheetNames;
 
 

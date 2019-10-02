@@ -1,5 +1,5 @@
 const path = require('path');
-const excel = require('./utils/excel.js')
+const excel = require('../public/js/excel.js')
 
 
 const express = require('express');
