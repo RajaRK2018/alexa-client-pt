@@ -1,0 +1,51 @@
+
+    #txpt{
+        font-size: 120%;
+    }
+
+    #err{
+        font-size: 120%;
+    }
+
+	#inttxpt{
+        color:#999;
+    }
+    
+
+
+    #voiceOptions{
+        color: #000000;
+    }
+
+    .container textarea{
+        /* width: 390px; */
+        height: 100px;
+        resize: none;
+        outline: none;
+        border: 1px solid #ccc;
+    }
+
+    .container label{
+        display: block;
+        
+    }
+
+    .container label span{
+        /* width: 100px; */
+        margin-top: 20px;
+        display: inline-block;                
+    }
+
+    .button{
+        display: inline-block;
+        background: #f6f6f6;
+        padding: 10px 20px;
+        color: #000;
+        border: 1px solid #ccc;
+        cursor: pointer;
+        margin-top: 20px;
+    }
+
+    .button hover{
+        box-shadow: 4px 4px 10px 0 #ccc;
+    }
