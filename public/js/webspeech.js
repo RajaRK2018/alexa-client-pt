@@ -292,7 +292,9 @@ function Scheduler(){
             testBtn.classList.remove("btn-secondary");
             testBtn.classList.add("btn-primary");
             testBtn.disabled = false;
+            
             console.log('The intent ' + intent + ' is completed');
+            utterID = 1;  
         }
         
 
