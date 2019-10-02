@@ -4,6 +4,7 @@ const excel = require('./utils/excel.js')
 
 const express = require('express');
 const app = express();
+const port = process.env.PORT || 3000;
 
 const hbs = require('hbs');
 
@@ -31,7 +32,9 @@ app.get('/test', (req, res) => {
     res.send(utteranceArray)
 })
 
+//git config core.autocrlf true
 
-app.listen(3000, () => {
-    console.log('server is up on the port 3000')
+
+app.listen(port, () => {
+    console.log('server is up on the port' + port)
 })
