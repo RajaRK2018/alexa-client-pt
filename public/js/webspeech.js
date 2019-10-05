@@ -126,6 +126,24 @@ var startRecognition = function (p, q, r) {
         console.log("The Alexa/User speech detected at "+ newDate.toLocaleString('en-US', { timeZone: 'Asia/Kolkata' }) + " which is " + detectduration + " ms since recognition service started");
     }
 
+    speechRecognizer.onaudiostart = function (event){
+
+        newTime = Date.now();
+        newDate =  new Date(newTime);
+        detectduration = newTime - time;
+
+        console.log("The Alexa/User audio started at "+ newDate.toLocaleString('en-US', { timeZone: 'Asia/Kolkata' }) + " which is " + detectduration + " ms since recognition service started");
+    }
+
+    speechRecognizer.onaudioend = function (event){
+
+        newTime = Date.now();
+        newDate =  new Date(newTime);
+        detectduration = newTime - time;
+
+        console.log("The Alexa/User audio ended at "+ newDate.toLocaleString('en-US', { timeZone: 'Asia/Kolkata' }) + " which is " + detectduration + " ms since recognition service started");
+    }
+
 
     speechRecognizer.onspeechend = function (event){
 
