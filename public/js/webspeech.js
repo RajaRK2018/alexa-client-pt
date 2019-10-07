@@ -1,3 +1,12 @@
+/* Set the width of the sidebar to 250px (show it) */
+function openNav() {
+    document.getElementById("mySidepanel").style.width = "250px";
+}
+  
+ /* Set the width of the sidebar to 0 (hide it) */
+function closeNav() {
+    document.getElementById("mySidepanel").style.width = "0";
+}
 
 function checkCompatibilityForSpeechSynthesis() {
     if(!('speechSynthesis' in window)){
@@ -17,6 +26,9 @@ checkCompatibilityForSpeechRecognition();
 
 var  voiceOptions = document.getElementById('voiceOptions');
 var  testBtn = document.getElementById('testBtn');
+
+var fileUpload = document.getElementById('fileUpload');
+
 //var  myText = document.getElementById('myText');
 var voiceMap = [];
 
@@ -73,6 +85,76 @@ testBtn.addEventListener('click', function(){
     }
 
 })
+
+fileUpload.addEventListener('change', handleFile, false);
+
+function handleFile(e) {
+
+    var files = e.target.files, f = files[0];
+
+    var reader = new FileReader();
+
+    reader.onload = function(e) {
+
+      var data = new Uint8Array(e.target.result);
+    
+      var wb = XLSX.read(data, {type: 'array'});
+
+      var sheetNames = wb.SheetNames;
+
+      console.log(sheetNames);
+
+      console.log(sheetNames[0]);
+
+    //   getIntentList(data, {type: 'array'}, function(intentList, intentListLength){
+    //       console.log(intentList);
+    //       console.log(intentListLength);
+
+    //   });
+   
+      /* DO SOMETHING WITH workbook HERE */
+    };
+
+    reader.readAsArrayBuffer(f);
+}
+
+const getUtteranceArray = (fileData, options, intent) => {
+
+    const wb = xlsx.read(fileData, options);
+
+     const utteranceArray = xlsx.utils.sheet_to_json(wb.Sheets[intent]);
+
+     return utteranceArray;
+}
+
+// var getIntentList = function (i, j, callback){
+
+//     fetch('/getIntentList', {
+//         method: 'POST',
+//         body: JSON.stringify({
+//             data: i,
+//             options: j   
+//         }),
+//         headers: {
+//           'Accept': 'application/json',
+//           'Content-Type': 'application/json'
+//         }
+//       }).then((data) => {
+        
+//         //response.json().then((data) => {
+            
+//             if(!data){
+//                 console.log('Error Occurred')
+//             }
+//             else{
+//                 callback(data, data[0]);
+//             }
+
+//         // })
+//    })
+
+
+// }
 
 var test = function (i, j, k, callback) {
 

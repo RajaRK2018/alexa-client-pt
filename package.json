@@ -10,8 +10,10 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "body-parser": "^1.19.0",
     "express": "^4.16.4",
     "hbs": "^4.0.5",
+    "mongodb": "^3.3.2",
     "request": "^2.88.0",
     "xlsx": "^0.15.1"
   }

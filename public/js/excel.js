@@ -1,15 +1,37 @@
-const xlsx = require('xlsx');
-const wb = xlsx.readFile('./public/js/SampleExcel.xlsx');
-const sheetNames = wb.SheetNames;
+// const xlsx = require('xlsx');
 
+// //For Server side excel file
+// //const wb = xlsx.readFile('public/js/SampleExcel.xlsx');
 
-const readIntent = (intent) => {
+// // const getUtteranceArray = (intent) => {
+    
+// //     const utteranceArray = xlsx.utils.sheet_to_json(wb.Sheets[intent]);
 
-    const utteranceArray = xlsx.utils.sheet_to_json(wb.Sheets[intent]);
-    return utteranceArray;
+// //     return utteranceArray;
+// // }
+
+// //For Client side excel file
+
+// const getIntentArray = (fileData, options) => {
+
+//     const wb = xlsx.read(fileData, options);
+
+//     const sheetNames = wb.SheetNames;
+
+//     return sheetNames;
+
+// }
+
+const getUtteranceArray = (fileData, options, intent) => {
+
+    const wb = xlsx.read(fileData, options);
+
+     const utteranceArray = xlsx.utils.sheet_to_json(wb.Sheets[intent]);
+
+     return utteranceArray;
 }
 
 module.exports = {
-    readIntent: readIntent,
-    sheetNames: sheetNames
+    getUtteranceArray: getUtteranceArray,
+    // getIntentArray: getIntentArray
 }
