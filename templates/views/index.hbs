@@ -73,29 +73,37 @@
                     <h4>Smart Speakers - End User Performance Evaluator</h4>
 
                     <div>
-
                         <div>
-                            <input class="mt-5" type="file" id="fileUpload" />
+                            <input class="mt-5 p-2" type="file" id="fileUpload" />
                         </div>
-
-                        {{!-- <div>
-                            <input class="mt-5 p-2" type="button" id="upload" value="Upload" />
-                        </div> --}}
-
                         <hr />
-
                         <div id="dvExcel"></div>
-
                     </div>
 
-                    <label class="m-2">
-                        <span>Voice</span>
-                        {{!-- class="ml-3 w-75" --}}
-                        <select id="voiceOptions"></select>
-                    </label>
+                    <div>
+                        <label class="m-2">
+                            <span id="intents" class="strong">Intents Detected: </span>
+                        </label>
+                    </div>
+
+                    <div>
+                        <label class="m-2">
+                            <span class="strong">Voice</span>
+                            <select id="voiceOptions" class="w-100 float-none"></select>
+                        </label>
+                    </div>
+
+                    <div>
+                        <label class="m-2">
+                            <span class="strong">Iteration</span>
+                            <div>
+                                <input type="number" step="1" id="Iteration" class="w-50">
+                            </div>
+                        </label>
+                    </div>
                   
                     <div>
-                        <input class="mt-5 btn btn-lg btn-primary" id="testBtn" value="Test"/>
+                        <input class="mt-5 btn btn-lg btn-primary align-center" id="testBtn" value="Test"/>
                     </div>
 
                 </div>

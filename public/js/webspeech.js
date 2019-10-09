@@ -73,17 +73,27 @@ function handleFile() {
 
         var intents = wb.SheetNames;
 
+        var ul = document.createElement('ul');
+
         for (var i = 0; i < intents.length; i++){
 
             console.log('Intent ' + i + ': ' + intents[i]);
+            
+            var li = document.createElement('li');
 
-            var utterances = XLSX.utils.sheet_to_json(wb.Sheets[intents[i]]);
+            li.innerHTML= intents[i];
+            
+            ul.appendChild(li);
+            
+            document.getElementById('intents').appendChild(ul);
 
-            for (var j = 0; j < utterances.length; j++){
+            // var utterances = XLSX.utils.sheet_to_json(wb.Sheets[intents[i]]);
 
-                console.log('Utterance ' + j + ' for ' + intents[i] + ': ' + utterances[j].utterance);
+            // for (var j = 0; j < utterances.length; j++){
 
-            }
+            //     console.log('Utterance ' + j + ' for ' + intents[i] + ': ' + utterances[j].utterance);
+
+            // }
         }   
     };
 
