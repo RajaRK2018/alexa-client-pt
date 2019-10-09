@@ -24,21 +24,16 @@ checkCompatibilityForSpeechSynthesis();
 
 checkCompatibilityForSpeechRecognition();
 
-var  voiceOptions = document.getElementById('voiceOptions');
-var  testBtn = document.getElementById('testBtn');
-
+var voiceOptions = document.getElementById('voiceOptions');
+var testBtn = document.getElementById('testBtn');
 var fileUpload = document.getElementById('fileUpload');
-
-//var  myText = document.getElementById('myText');
 var voiceMap = [];
-
+var scheduler = new Scheduler();
 
 var time = 0;
 var date =  new Date(time);
-
 var newTime = 0;
 var newDate =  new Date(newTime);
-
 var detectduration = 0;           
 var completeduration = 0;
 var endduration = 0;
@@ -57,11 +52,43 @@ function loadVoices () {
     };
 };
 
-var scheduler = new Scheduler();
-
 window.speechSynthesis.onvoiceschanged = function(e){
     loadVoices();
 };
+
+fileUpload.addEventListener('change', handleFile, false);
+
+function handleFile() {
+
+    var files = fileUpload.files;
+    var f = files[0];
+
+    var reader = new FileReader();
+
+    reader.onload = function(e) {
+
+        var data = new Uint8Array(e.target.result);
+        
+        var wb = XLSX.read(data, {type: 'array'});
+
+        var intents = wb.SheetNames;
+
+        for (var i = 0; i < intents.length; i++){
+
+            console.log('Intent ' + i + ': ' + intents[i]);
+
+            var utterances = XLSX.utils.sheet_to_json(wb.Sheets[intents[i]]);
+
+            for (var j = 0; j < utterances.length; j++){
+
+                console.log('Utterance ' + j + ' for ' + intents[i] + ': ' + utterances[j].utterance);
+
+            }
+        }   
+    };
+
+    reader.readAsArrayBuffer(f);
+}
 
 testBtn.addEventListener('click', function(){
 
@@ -73,97 +100,146 @@ testBtn.addEventListener('click', function(){
 
     else{
 
-        if(!scheduler.isOn){
+        var regex = /^([a-zA-Z0-9\s_\\.\-:])+(.xls|.xlsx)$/;
 
-            testBtn.classList.remove("btn-primary");
-            testBtn.classList.add("btn-secondary");
-            testBtn.disabled = true;
+        if (!regex.test(fileUpload.value.toLowerCase())) {
 
-            scheduler.start(test);
-            
-        }       
+            alert("Please upload a valid Excel file.");
+
+        }
+
+        else {
+
+            if(!scheduler.isOn){
+
+                testBtn.classList.remove("btn-primary");
+                testBtn.classList.add("btn-secondary");
+                testBtn.disabled = true;
+    
+                scheduler.start(test);
+                
+            }            
+        }              
     }
-
 })
 
-fileUpload.addEventListener('change', handleFile, false);
+function Scheduler(){
 
-function handleFile(e) {
+    var intentID = 0;
+    var utterID = 0;    
 
-    var files = e.target.files, f = files[0];
+    this.isOn = false;
+
+    this.start = function(callback){
+        
+        if(!this.on){
+
+            getTestParams(intentID, utterID, function(intentName, utterText, intentArrLen, currUtterArrLen){
+            
+                callback(intentName, utterText, intentArrLen, currUtterArrLen, startRecognition);          
+                
+            })   
+              
+            this.isOn = true;      
+        }
+
+        else{
+            console.log('Current utterance is still in progress')
+        }
+
+    }
+    
+    this.next = function(intentArrLen, currUtterArrLen, nextIter){
+
+        this.isOn = false;
+        utterText = '';
+        console.log('Test completed for current Utterance');
+        if(utterID < currUtterArrLen-1){
+            utterID++;
+            scheduler.start(nextIter);            
+        }
+
+        else{
+            // testBtn.classList.remove("btn-secondary");
+            // testBtn.classList.add("btn-primary");
+            // testBtn.disabled = false;
+
+            console.log('Test completed for current Intent');
+
+            utterID = 0;
+
+            if(intentID < intentArrLen-1){
+                intentID++;
+                scheduler.start(nextIter);            
+            }
+            
+            else{
+
+                testBtn.classList.remove("btn-secondary");
+                testBtn.classList.add("btn-primary");
+                testBtn.disabled = false;
+
+                console.log('Test completed for All Intents');
+
+            }
+        }
+    }    
+}
+
+function getTestParams(intentID, utterID, callback) {
+
+    var files = fileUpload.files;
+    var f = files[0];
 
     var reader = new FileReader();
 
     reader.onload = function(e) {
 
-      var data = new Uint8Array(e.target.result);
-    
-      var wb = XLSX.read(data, {type: 'array'});
+        var data = new Uint8Array(e.target.result);
+        
+        var wb = XLSX.read(data, {type: 'array'});
 
-      var sheetNames = wb.SheetNames;
+        var intents = wb.SheetNames;
+        
+        var utterances = XLSX.utils.sheet_to_json(wb.Sheets[intents[intentID]]);
 
-      console.log(sheetNames);
+        console.log(intents[intentID], utterances[utterID].utterance, intents.length, utterances.length);
 
-      console.log(sheetNames[0]);
+        callback(intents[intentID], utterances[utterID].utterance, intents.length, utterances.length);
 
-    //   getIntentList(data, {type: 'array'}, function(intentList, intentListLength){
-    //       console.log(intentList);
-    //       console.log(intentListLength);
-
-    //   });
-   
-      /* DO SOMETHING WITH workbook HERE */
-    };
+    }
 
     reader.readAsArrayBuffer(f);
 }
 
-const getUtteranceArray = (fileData, options, intent) => {
+/*
+var utterFind = function (i, j, k, callback){
 
-    const wb = xlsx.read(fileData, options);
+    fetch('/test?intent=' + i).then((response) => {
+        
+        response.json().then((data) => {
+            
+            if(data.error){
+                return data.error;
+            }
+            else{
+                callback(j, data[k].utterance, data.length);
+            }
 
-     const utteranceArray = xlsx.utils.sheet_to_json(wb.Sheets[intent]);
-
-     return utteranceArray;
+        })
+    })
 }
 
-// var getIntentList = function (i, j, callback){
+*/
 
-//     fetch('/getIntentList', {
-//         method: 'POST',
-//         body: JSON.stringify({
-//             data: i,
-//             options: j   
-//         }),
-//         headers: {
-//           'Accept': 'application/json',
-//           'Content-Type': 'application/json'
-//         }
-//       }).then((data) => {
-        
-//         //response.json().then((data) => {
-            
-//             if(!data){
-//                 console.log('Error Occurred')
-//             }
-//             else{
-//                 callback(data, data[0]);
-//             }
-
-//         // })
-//    })
-
-
-// }
-
-var test = function (i, j, k, callback) {
+var test = function (intentName, utterText, intentArrLen, currUtterArrLen, callback) {
 
     var msg = new SpeechSynthesisUtterance();
     msg.voice = voiceMap[voiceOptions.value]; 
     msg.volume = 1;
     msg.rate = 1;
     msg.pitch = 0.8;
-    msg.text = j;   
+    msg.text = utterText;   
 
     console.log("Listen to the speech now");
     
@@ -171,7 +247,7 @@ var test = function (i, j, k, callback) {
     date =  new Date(time);
     window.speechSynthesis.speak(msg);
 
-    console.log('Utterance ID ' + i + ', Utterance Text ' + msg.text +' - Start Time: ' + date.toLocaleString('en-US', { timeZone: 'Asia/Kolkata' }));
+    console.log('Intent ' + intentName + ', Utterance Text ' + msg.text +' - Start Time: ' + date.toLocaleString('en-US', { timeZone: 'Asia/Kolkata' }));
 
     msg.onend = function (event){
 
@@ -180,12 +256,12 @@ var test = function (i, j, k, callback) {
         
         console.log("User Utterance ended / Speech Recognition started at "+ date.toLocaleString('en-US', { timeZone: 'Asia/Kolkata' }));
 
-        callback(i, j, k);
+        callback(intentName, utterText, intentArrLen, currUtterArrLen);
     }
 
 };
 
-var startRecognition = function (p, q, r) {
+var startRecognition = function (intentName, utterText, intentArrLen, currUtterArrLen) {
 
     var speechRecognizer = new webkitSpeechRecognition();
     speechRecognizer.continuous = true;
@@ -197,7 +273,6 @@ var startRecognition = function (p, q, r) {
     speechRecognizer.start();
 
     console.log("Click Allow if prompted for using Mic");
-
 
     speechRecognizer.onspeechstart = function (event){
 
@@ -241,8 +316,6 @@ var startRecognition = function (p, q, r) {
         if(!speechRecognizer.onend){
             speechRecognizer.onend();
         }
-
-
     }                  
 
     speechRecognizer.onresult = function(event){
@@ -252,8 +325,6 @@ var startRecognition = function (p, q, r) {
         completeduration = newTime - time;
 
         console.log("The Alexa/User response completed at "+ newDate.toLocaleString('en-US', { timeZone: 'Asia/Kolkata' })  + " which is " + completeduration + " ms since recognition service started");
-
-        var interimTranscripts = '';
         
         for(var i=event.resultIndex; i<event.results.length;i++){
             var transcript = event.results[i][0].transcript;
@@ -273,7 +344,6 @@ var startRecognition = function (p, q, r) {
 
             console.log("Speech Recognition intentionally aborted");
 
-
             var table = document.getElementById("results_table");
 
             var row = table.insertRow(-1);
@@ -285,8 +355,8 @@ var startRecognition = function (p, q, r) {
             var cell4 = row.insertCell(3);
             var cell5 = row.insertCell(4);
 
-            cell1.innerHTML = p;
-            cell2.innerHTML = q;
+            cell1.innerHTML = intentName;
+            cell2.innerHTML = utterText;
             cell3.innerHTML = finalTranscripts;
             cell4.innerHTML = detectduration;
             cell5.innerHTML = completeduration ;
@@ -307,7 +377,7 @@ var startRecognition = function (p, q, r) {
 
         if(scheduler.isOn){
 
-            scheduler.next(test, r);
+            scheduler.next(intentArrLen, currUtterArrLen, test);
               
         }
         
@@ -351,70 +421,3 @@ var startRecognition = function (p, q, r) {
     }
 };
 
-function Scheduler(){
-
-    var intent = 'claimAdjusterInquiry';
-    var utterID = 1;    
-
-    this.isOn = false;
-
-    this.start = function(feedback){
-
-        if(!this.on){
-
-            utterFind(intent, utterID, utterID-1, function(utterID, utterText, arrayLength){
-            
-                feedback(utterID, utterText, arrayLength, startRecognition);          
-                
-            })   
-              
-            this.isOn = true;
-      
-        }
-
-        else{
-            console.log('Current utterance is still in progress')
-        }
-
-    }
-    
-    this.next = function(nextIter, arrayLength){
-
-        this.isOn = false;
-        utterText = '';
-        console.log('The current utterance has ended');
-        if(utterID < arrayLength){
-            utterID++;
-            scheduler.start(nextIter);            
-        }
-
-        else{
-            testBtn.classList.remove("btn-secondary");
-            testBtn.classList.add("btn-primary");
-            testBtn.disabled = false;
-            
-            console.log('The intent ' + intent + ' is completed');
-            utterID = 1;  
-        }
-        
-
-    }
-
-    var utterFind = function (i, j, k, callback){
-
-        fetch('/test?intent=' + i).then((response) => {
-            
-            response.json().then((data) => {
-                
-                if(data.error){
-                    return data.error;
-                }
-                else{
-                    callback(j, data[k].utterance, data.length);
-                }
-
-            })
-        })
-    }
-
-}
