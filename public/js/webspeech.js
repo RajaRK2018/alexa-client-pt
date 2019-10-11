@@ -237,16 +237,16 @@ var test = function (intentName, utterText, intentArrLen, response, sla, currUtt
 
     console.log("Listen to the speech now");
     
-    time = Date.now();
-    date =  new Date(time);
+    time = performance.now();
+    date =  new Date(Date.now());
     window.speechSynthesis.speak(msg);
 
     console.log('Intent ' + intentName + ', Utterance Text ' + msg.text +' - Start Time: ' + date.toLocaleString('en-US', { timeZone: 'Asia/Kolkata' }));
 
     msg.onend = function (event){
 
-        time = Date.now();
-        date =  new Date(time);
+        time = performance.now();
+        date =  new Date(Date.now());
         
         console.log("User Utterance ended / Speech Recognition started at "+ date.toLocaleString('en-US', { timeZone: 'Asia/Kolkata' }));
 
@@ -270,27 +270,27 @@ var startRecognition = function (intentName, utterText, response, sla, intentArr
 
     speechRecognizer.onspeechstart = function (event){
 
-        newTime = Date.now();
-        newDate =  new Date(newTime);
-        detectduration = newTime - time;
+        newTime = performance.now();
+        newDate =  new Date(Date.now());
+        detectduration = Math.ceil(newTime - time);
 
         console.log("The Alexa/User speech detected at "+ newDate.toLocaleString('en-US', { timeZone: 'Asia/Kolkata' }) + " which is " + detectduration + " ms since recognition service started");
     }
 
     // speechRecognizer.onaudiostart = function (event){
 
-    //     newTime = Date.now();
-    //     newDate =  new Date(newTime);
-    //     detectduration = newTime - time;
+    //     newTime = performance.now();
+    //     newDate =  new Date(Date.now());
+    //     detectduration = Math.ceil(newTime - time);
 
     //     console.log("The Alexa/User audio started at "+ newDate.toLocaleString('en-US', { timeZone: 'Asia/Kolkata' }) + " which is " + detectduration + " ms since recognition service started");
     // }
 
     // speechRecognizer.onaudioend = function (event){
 
-    //     newTime = Date.now();
+    //     newTime = performance.now();
     //     newDate =  new Date(newTime);
-    //     detectduration = newTime - time;
+    //     detectduration = Math.ceil(newTime - time);
 
     //     console.log("The Alexa/User audio ended at "+ newDate.toLocaleString('en-US', { timeZone: 'Asia/Kolkata' }) + " which is " + detectduration + " ms since recognition service started");
     // }
@@ -298,9 +298,9 @@ var startRecognition = function (intentName, utterText, response, sla, intentArr
 
     speechRecognizer.onspeechend = function (event){
 
-        newTime = Date.now();
-        newDate =  new Date(newTime);
-        endduration = newTime - time;
+        newTime = performance.now();
+        newDate =  new Date(Date.now());
+        endduration = Math.ceil(newTime - time);
 
         console.log("No more detection as of "+ newDate.toLocaleString('en-US', { timeZone: 'Asia/Kolkata' }) + " which is " + endduration + " ms since recognition service started");
 
@@ -314,9 +314,9 @@ var startRecognition = function (intentName, utterText, response, sla, intentArr
 
     speechRecognizer.onresult = function(event){
 
-        newTime = Date.now();
-        newDate =  new Date(newTime);
-        completeduration = newTime - time;
+        newTime = performance.now();
+        newDate =  new Date(Date.now());
+        completeduration = Math.ceil(newTime - time);
 
         console.log("The Alexa/User response completed at "+ newDate.toLocaleString('en-US', { timeZone: 'Asia/Kolkata' })  + " which is " + completeduration + " ms since recognition service started");
         
@@ -378,8 +378,8 @@ var startRecognition = function (intentName, utterText, response, sla, intentArr
 
     speechRecognizer.onend = function (event){
 
-        newTime = Date.now();
-        newDate =  new Date(newTime);
+        newTime = performance.now();
+        newDate =  new Date(Date.now());
         console.log("Recognition service stopped at " + newDate.toLocaleString('en-US', { timeZone: 'Asia/Kolkata' }) );
 
         if(scheduler.isOn){
@@ -392,9 +392,9 @@ var startRecognition = function (intentName, utterText, response, sla, intentArr
 
     speechRecognizer.onnomatch = function (event){
 
-        newTime = Date.now();
-        newDate =  new Date(newTime);
-        nodetectduration = newTime - time;
+        newTime = performance.now();
+        newDate =  new Date(Date.now());
+        nodetectduration = Math.ceil(newTime - time);
 
          console.log("No speech detected till "+ newDate.toLocaleString('en-US', { timeZone: 'Asia/Kolkata' })  + " which is " + nodetectduration + " ms since recognition service started");
 
@@ -410,11 +410,11 @@ var startRecognition = function (intentName, utterText, response, sla, intentArr
 
     speechRecognizer.onerror = function(event){
 
-        newTime = Date.now();
-        newDate =  new Date(newTime);
+        newTime = performance.now();
+        newDate =  new Date(Date.now());
         
         var completeError = event.error;
-        errorduration = newTime - time;
+        errorduration = Math.ceil(newTime - time);
 
         console.log("Recognition Error: " + completeError + " at "+ newDate.toLocaleString('en-US', { timeZone: 'Asia/Kolkata' })  + " which is " + errorduration + " ms since recognition service started");
 
