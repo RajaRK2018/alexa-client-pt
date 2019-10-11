@@ -25,8 +25,15 @@ try {
     window.audioContext = new AudioContext();
 
     document.querySelector('#resume').addEventListener('click', function() {
-        audioContext.resume().then(() => {
-          console.log('Microphone input Detected');
+        audioContext.resume().then((r) => {
+
+          document.querySelector('#micstatus').textContent = "Input Source Detected";
+          console.log(r);
+        }).catch((e) => {
+
+          document.querySelector('#micstatus').textContent = "No Input Source Detected";
+          console.log(e);
+
         });
       });
 

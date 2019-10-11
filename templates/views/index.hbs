@@ -73,11 +73,7 @@
                     <h4>Smart Speakers - End User Performance Evaluator</h4>
 
                     <div>
-                        <div>
-                            <input class="mt-5 p-2" type="file" id="fileUpload" />
-                        </div>
-                        <hr />
-                        <div id="dvExcel"></div>
+                        <input class="mt-3 mb-3 btn btn-lg" type="file" id="fileUpload" />
                     </div>
 
                     <div>
@@ -89,7 +85,9 @@
                     <div>
                         <label class="m-2">
                             <span class="strong">Voice</span>
-                            <select id="voiceOptions" class="w-100 float-none"></select>
+                            <div>
+                                <select id="voiceOptions"></select>
+                            </div>
                         </label>
                     </div>
 
@@ -97,22 +95,29 @@
                         <label class="m-2">
                             <span class="strong">Iteration</span>
                             <div>
-                                <input type="number" step="1" id="Iteration" class="w-50">
+                                <input type="number" step="1" id="iteration">
                             </div>
                         </label>
                     </div>
                   
                     <div>
-                        <input class="mt-5 btn btn-lg btn-primary align-center" id="testBtn" value="Test"/>
+                        <input class="mt-4 btn btn-lg btn-primary" id="testBtn" value="Test"/>
                     </div>
 
                 </div>
 
                 <div class="col-lg-4 m-1 border border-primary p-5 bg-gradient-primary">
 
-                    <h4>Check your Microphone</h4>
+                    <h4>Check your Microphone before testing</h4>
 
-                    <div id="resume" class="mt-5 mb-5 btn btn-lg btn-primary">Check</div>
+                    <input class="mt-5 mb-5 btn btn-lg btn-primary" id="resume" value="Check"/>
+
+                    <div>
+                        <label class="mt-4 mb-4">
+                            <span class="strong">Status: </span>
+                            <span id="micstatus" class="strong"></span>
+                        </label>
+                    </div>
 
                     <div id="meters">
 
@@ -133,37 +138,47 @@
 
         </div>
 
-        <div class="container mt-5 mb-5">
+        {{!-- <div class="container mt-5 mb-5">
 
             <div class="row justify-content-between">
 
-                <div class="col-lg-12 border border-primary p-5 bg-gradient-primary">
+                <div class="col-lg-12 border border-primary p-5 bg-gradient-primary"> --}}
 
-                    <table id="results_table">
+                    <div class="m-4 border border-primary p-5 bg-gradient-primary">
 
-                        <colgroup>
-                        <col style="width:15%">
-                        <col style="width:15%">
-                        <col style="width:15%">
-                        <col style="width:15%">
-                        <col style="width:15%">
-                        </colgroup>            
+                        <table id="results_table">
 
-                        <tr>
-                        <th id="uid">Intent Name</th>
-                        <th>Utterance</th>
-                        <th>Response Text</th>
-                        <th>Time to Detection (ms)</th>
-                        <th>Time to Completion (ms)</th>		  
-                        </tr>
+                            <colgroup>
+                            <col style="width:10%">
+                            <col style="width:10%">
+                            <col style="width:10%">
+                            <col style="width:10%">
+                            <col style="width:10%">
+                            <col style="width:10%">
+                            <col style="width:10%">
+                            <col style="width:10%">
+                            </colgroup>            
 
-                    </table>
+                            <tr>
+                            <th id="uid">Intent Name</th>
+                            <th>Utterance</th>
+                            <th>Expected Response</th>
+                            <th>Actual Response</th>
+                            <th>Response Time SLA</th>
+                            <th>SLA Compliance</th>
+                            <th>Time to Detection (ms)</th>
+                            <th>Time to Completion (ms)</th>                            		  
+                            </tr>
 
-                </div>
+                        </table>
+                    
+                    </div>
+
+                {{!-- </div>
 
              </div>
 
-        </div>
+        </div> --}}
 
         <script type="text/javascript" src="./js/webspeech.js"></script>
         <script type="text/javascript" src="./js/adapter-latest.js"></script>
