@@ -24,8 +24,13 @@ checkCompatibilityForSpeechSynthesis();
 
 checkCompatibilityForSpeechRecognition();
 
-var voiceOptions = document.getElementById('voiceOptions');
 var fileUpload = document.getElementById('fileUpload');
+
+var voiceOptions = document.getElementById('voiceOptions');
+var volumeSlider = document.getElementById('volumeSlider');
+var rateSlider = document.getElementById('rateSlider');
+var pitchSlider = document.getElementById('pitchSlider');
+
 var testBtn = document.getElementById('testBtn');
 var voiceMap = [];
 var intents = [];
@@ -57,6 +62,23 @@ function loadVoices () {
 window.speechSynthesis.onvoiceschanged = function(e){
     loadVoices();
 };
+
+function sleep(ms){
+    return new Promise(resolve => setTimeout (resolve, ms));
+}
+
+async function wait(){
+    console.log('Making a pause...');
+    await sleep(3000);
+    console.log('3 sec later');
+
+    for (var i = 0; i < 5; i++){
+        if(i === 3){
+            await sleep(3000);
+            console.log(i);
+        }
+    }
+}
 
 fileUpload.addEventListener('change', handleFile, false);
 
@@ -228,20 +250,29 @@ function Scheduler(){
 
 var test = function (intentName, utterText, intentArrLen, response, sla, currUtterArrLen, callback) {
 
+    var wakeup = new SpeechSynthesisUtterance();
+    wakeup.voice = voiceMap[voiceOptions.value]; 
+    wakeup.volume = volumeSlider.value;
+    wakeup.rate = rateSlider.value;
+    wakeup.pitch = pitchSlider.value;
+    wakeup.text = 'Alexa';
+
     var msg = new SpeechSynthesisUtterance();
     msg.voice = voiceMap[voiceOptions.value]; 
-    msg.volume = 1;
-    msg.rate = 1;
-    msg.pitch = 0.8;
-    msg.text = utterText;   
+    msg.volume = volumeSlider.value;
+    msg.rate = rateSlider.value;
+    msg.pitch = pitchSlider.value;
+    msg.text = utterText;
 
     console.log("Listen to the speech now");
     
-    time = performance.now();
     date =  new Date(Date.now());
-    window.speechSynthesis.speak(msg);
-
     console.log('Intent ' + intentName + ', Utterance Text ' + msg.text +' - Start Time: ' + date.toLocaleString('en-US', { timeZone: 'Asia/Kolkata' }));
+    
+    time = performance.now();
+    window.speechSynthesis.speak(wakeup);
+    wait();
+    window.speechSynthesis.speak(msg);
 
     msg.onend = function (event){
 
@@ -357,16 +388,16 @@ var startRecognition = function (intentName, utterText, response, sla, intentArr
             var cell5 = row.insertCell(4);
             var cell6 = row.insertCell(5);
             var cell7 = row.insertCell(6);
-            var cell8 = row.insertCell(7);
+            // var cell8 = row.insertCell(7);
 
             cell1.innerHTML = intentName;
             cell2.innerHTML = utterText;
-            cell3.innerHTML = response;
-            cell4.innerHTML = finalTranscripts;
-            cell5.innerHTML = sla;
-            cell6.innerHTML = slacompliance;
-            cell7.innerHTML = detectduration ;
-            cell8.innerHTML = completeduration ;
+            // cell3.innerHTML = response;
+            cell3.innerHTML = finalTranscripts;
+            cell4.innerHTML = sla;
+            cell5.innerHTML = slacompliance;
+            cell6.innerHTML = detectduration ;
+            cell7.innerHTML = completeduration ;
 
         }
 
