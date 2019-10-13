@@ -7,7 +7,7 @@ body{
 }
 
 #scheduler{
-    height: 40%;
+    height: auto;
 }
 
 .wrap{

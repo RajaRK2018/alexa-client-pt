@@ -64,90 +64,123 @@
 
         </div>
 
-        <div id="scheduler" class="container mt-5">
+        <div id="scheduler" class="container mt-2">
 
-            <div class="row justify-content-between">
+            {{!-- <div class="row justify-content-between">
 
-                <div class="col-lg-7 m-1 border border-primary p-5 bg-gradient-primary">
+                <div class="col-lg-12 m-1 border border-primary p-2 bg-gradient-primary"> --}}
 
                     <h4>Smart Speakers - End User Performance Evaluator</h4>
 
-                    <div>
-                        <input class="mt-3 mb-3 btn btn-lg" type="file" id="fileUpload" />
-                    </div>
+                    <div class="row justify-content-around">
 
-                    <div>
-                        <label class="m-2">
-                            <span id="intents" class="strong">Intents Detected: </span>
-                        </label>
-                    </div>
-
-                    <div>
-                        <label class="m-2">
-                            <span class="strong">Wakeup Word</span>
-                            <div>
-                                <input id="wakeupword">
-                            </div>
-                        </label>
-                    </div>
-
-                    <div>
-                        <label class="m-2">
-                            <span class="strong">Voice</span>
-                            <div>
-                                <select id="voiceOptions">
-                                    {{!-- <option value="Microsoft Anna - English (United States)">Microsoft Anna - English (United States)</option>
-                                    <option value="Google US English">Google US English</option>
-                                    <option value="Google UK English Female">Google UK English Female</option>
-                                    <option value="Google UK English Male">Google UK English Male</option> --}}
-                                </select>
-                            </div>
-                        </label>
-                    </div>
-
-                    <div>
-                        <label class="m-2">
-                                <span>Volume  </span>
+                        <div class="col-lg-8">
+                            <label class="mt-2 mb-2">
+                                <span class="strong">Mic Status: </span>
+                                <span id="micstatus" class="strong"></span>
                                 <div>
-                                <input type="range" id="volumeSlider" min="0" max="1" step="0.1" value="1">
+                                <input class="mt-3 mb-3 btn btn-md btn-primary" id="resume" value="Check"/>
                                 </div>
-                        </label>
-                    </div>
+                            </label>
+                        </div>
 
-                    <div>                    
-                        <label class="m-2">
-                                <span>Rate    </span>
-                                <div>
-                                <input type="range" id="rateSlider" min="0" max="1" step="0.1" value="0.9">
-                                </div>
-                        </label>
-                    </div>
+                        <div id="meters" class="col-lg-4">
 
-                    <div>
-                        <label class="m-2">
-                                <span>Pitch   </span>
-                                <div>
-                                <input type="range" id="pitchSlider" min="0" max="2" step="0.1" value="0.8">
-                                </div>
-                        </label>
-                    </div>
-
-                    <div>
-                        <label class="m-2">
-                            <span class="strong">Iteration</span>
-                            <div>
-                                <input type="number" step="1" id="iteration">
+                            <div id="instant" class="mt-4 mb-2">
+                                <div class="label">Instant:</div>
+                                <meter high="0.25" max="1" value="0"></meter>
+                                <div class="value"></div>
                             </div>
-                        </label>
+
+                        </div>
+                        
+                    </div>                    
+
+                    <div>
+                        <input class="mt-2 mb-2 btn btn-lg" type="file" id="fileUpload" />
                     </div>
+                    
+                    <div class="row justify-content-around">
+
+                        <div class="col-lg-4">
+                            <label class="m-2">
+                                <span id="intents" class="strong">Intents Detected: </span>
+                            </label>
+                        </div>
+
+                        <div class="col-lg-4">
+                            <label class="m-2">
+                                <span class="strong">Wakeup Word</span>
+                                <div>
+                                    <input id="wakeupword">
+                                </div>
+                            </label>
+                        </div>
+
+                        <div class="col-lg-4">
+                            <label class="m-2">
+                                <span class="strong">Iteration</span>
+                                <div>
+                                    <input type="number" step="1" id="iteration">
+                                </div>
+                            </label>
+                        </div>
+
+                    </div>
+
+                    <div class="row justify-content-around">
+
+                        <div class="col-lg-3">
+                            <label class="m-2">
+                                <span class="strong">Voice</span>
+                                <div>
+                                    <select id="voiceOptions">
+                                        {{!-- <option value="Microsoft Anna - English (United States)">Microsoft Anna - English (United States)</option>
+                                        <option value="Google US English">Google US English</option>
+                                        <option value="Google UK English Female">Google UK English Female</option>
+                                        <option value="Google UK English Male">Google UK English Male</option> --}}
+                                    </select>
+                                </div>
+                            </label>
+                        </div>
+
+                        <div class="col-lg-3">
+                            <label class="m-2">
+                                    <span>Volume  </span>
+                                    <div>
+                                    <input type="range" id="volumeSlider" min="0" max="1" step="0.1" value="1">
+                                    </div>
+                            </label>
+                        </div>
+
+                        <div class="col-lg-3">       
+                            <label class="m-2">
+                                    <span>Rate    </span>
+                                    <div>
+                                    <input type="range" id="rateSlider" min="0" max="1" step="0.1" value="0.9">
+                                    </div>
+                            </label>
+                        </div>
+
+                        <div class="col-lg-3">
+                            <label class="m-2">
+                                    <span>Pitch   </span>
+                                    <div>
+                                    <input type="range" id="pitchSlider" min="0" max="2" step="0.1" value="0.8">
+                                    </div>
+                            </label>
+                        </div>
+
+
+                    </div>                           
                   
                     <div>
                         <input class="mt-4 btn btn-lg btn-primary" id="testBtn" value="Test"/>
                     </div>
 
-                </div>
+                {{!-- </div> --}}
 
-                <div class="col-lg-4 m-1 border border-primary p-5 bg-gradient-primary">
+                {{!-- <div class="col-lg-4 m-1 border border-primary p-5 bg-gradient-primary">
 
                     <h4>Check your Microphone before testing</h4>
 
@@ -170,12 +203,9 @@
 
                     </div>
 
-                    {{!-- <p>The 'instant' volume changes approximately every 50ms; the 'slow' volume approximates the average volume over
-                        about a second.</p> --}}
+                </div> --}}
 
-                </div>
-
-            </div>
+            {{!-- </div> --}}
 
         </div>
 
