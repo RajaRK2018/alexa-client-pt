@@ -64,7 +64,7 @@
 
         </div>
 
-        <div class="container mt-5">
+        <div id="scheduler" class="container mt-5">
 
             <div class="row justify-content-between">
 
@@ -84,9 +84,23 @@
 
                     <div>
                         <label class="m-2">
+                            <span class="strong">Wakeup Word</span>
+                            <div>
+                                <input id="wakeupword">
+                            </div>
+                        </label>
+                    </div>
+
+                    <div>
+                        <label class="m-2">
                             <span class="strong">Voice</span>
                             <div>
-                                <select id="voiceOptions"></select>
+                                <select id="voiceOptions">
+                                    {{!-- <option value="Microsoft Anna - English (United States)">Microsoft Anna - English (United States)</option>
+                                    <option value="Google US English">Google US English</option>
+                                    <option value="Google UK English Female">Google UK English Female</option>
+                                    <option value="Google UK English Male">Google UK English Male</option> --}}
+                                </select>
                             </div>
                         </label>
                     </div>
@@ -104,7 +118,7 @@
                         <label class="m-2">
                                 <span>Rate    </span>
                                 <div>
-                                <input type="range" id="rateSlider" min="0" max="1" step="0.1" value="1">
+                                <input type="range" id="rateSlider" min="0" max="1" step="0.1" value="0.9">
                                 </div>
                         </label>
                     </div>
@@ -113,7 +127,7 @@
                         <label class="m-2">
                                 <span>Pitch   </span>
                                 <div>
-                                <input type="range" id="pitchSlider" min="0" max="2" step="0.1" value="1">
+                                <input type="range" id="pitchSlider" min="0" max="2" step="0.1" value="0.8">
                                 </div>
                         </label>
                     </div>
@@ -173,31 +187,52 @@
 
                     <div class="m-4 border border-primary p-5 bg-gradient-primary">
 
-                        <table id="results_table">
+                        <div class="wrap">
 
-                            <colgroup>
-                            <col style="width:10%">
-                            <col style="width:10%">
-                            {{!-- <col style="width:10%"> --}}
-                            <col style="width:20%">
-                            <col style="width:10%">
-                            <col style="width:10%">
-                            <col style="width:10%">
-                            <col style="width:10%">
-                            </colgroup>            
+                            <table id="results_table_head" class="head">
 
-                            <tr>
-                            <th id="uid">Intent Name</th>
-                            <th>Utterance</th>
-                            {{!-- <th>Expected Response</th> --}}
-                            <th>Actual Response</th>
-                            <th>Response Time SLA</th>
-                            <th>SLA Compliance</th>
-                            <th>Time to Detection (ms)</th>
-                            <th>Time to Completion (ms)</th>                            		  
-                            </tr>
+                                <colgroup>
+                                <col style="width:10%">
+                                <col style="width:10%">
+                                {{!-- <col style="width:10%"> --}}
+                                <col style="width:20%">
+                                <col style="width:10%">
+                                <col style="width:10%">
+                                <col style="width:10%">
+                                <col style="width:10%">
+                                </colgroup>
 
-                        </table>
+                                <tr>
+                                <th id="uid">Intent Name</th>
+                                <th>Utterance</th>
+                                {{!-- <th>Expected Response</th> --}}
+                                <th>Actual Response</th>
+                                <th>Response Time SLA</th>
+                                <th>SLA Compliance</th>
+                                <th>Time to Detection (ms)</th>
+                                <th>Time to Completion (ms)</th>                            		  
+                                </tr>
+
+                            </table>
+                            <div class="inner_table">
+                                <table id="results_table">
+
+                                    <colgroup>
+                                    <col style="width:10%">
+                                    <col style="width:10%">
+                                    {{!-- <col style="width:10%"> --}}
+                                    <col style="width:20%">
+                                    <col style="width:10%">
+                                    <col style="width:10%">
+                                    <col style="width:10%">
+                                    <col style="width:10%">
+                                    </colgroup>
+
+                                </table>
+
+                            </div>
+
+                        </div>
                     
                     </div>
 

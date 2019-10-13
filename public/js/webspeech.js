@@ -27,9 +27,11 @@ checkCompatibilityForSpeechRecognition();
 var fileUpload = document.getElementById('fileUpload');
 
 var voiceOptions = document.getElementById('voiceOptions');
+//var voice = '';
 var volumeSlider = document.getElementById('volumeSlider');
 var rateSlider = document.getElementById('rateSlider');
 var pitchSlider = document.getElementById('pitchSlider');
+var wakeupword = document.getElementById('wakeupword');
 
 var testBtn = document.getElementById('testBtn');
 var voiceMap = [];
@@ -51,10 +53,9 @@ function loadVoices () {
         var voice = voices[i];
         var option = document.createElement('option');
         option.value = voice.name;
-        option.setAttribute('id', 'option')
         option.innerhtml = voice.name;
         voiceOptions.appendChild(option);
-        //console.log("Voice " + i + " - " + voice.name);
+        console.log("Voice " + i + " - " + voice.name);
         voiceMap[voice.name] = voice;
     };
 };
@@ -67,15 +68,15 @@ function sleep(ms){
     return new Promise(resolve => setTimeout (resolve, ms));
 }
 
-async function wait(){
+async function wait(ms){
     console.log('Making a pause...');
-    await sleep(3000);
-    console.log('3 sec later');
+    await sleep(ms);
+    console.log(ms + ' sec later');
 
     for (var i = 0; i < 5; i++){
         if(i === 3){
-            await sleep(3000);
-            console.log(i);
+            await sleep(ms);
+            //console.log(i);
         }
     }
 }
@@ -117,10 +118,10 @@ function handleFile() {
 
                 intents[i].push(utterances[j]);
 
-                console.log(intents[i][j].name)
-                console.log(intents[i][j].utterance)
-                console.log(intents[i][j].response)
-                console.log(intents[i][j].sla)
+                // console.log(intents[i][j].name)
+                // console.log(intents[i][j].utterance)
+                // console.log(intents[i][j].response)
+                // console.log(intents[i][j].sla)
             }
         }   
     };
@@ -155,6 +156,11 @@ testBtn.addEventListener('click', function(){
                 testBtn.disabled = true;
 
                 iteration = document.getElementById('iteration');
+                wakeupword = document.getElementById('wakeupword').value;
+                //voice = document.getElementById('voiceOptions').value;
+
+                //console.log("Selected Voice: " + voice);
+                console.log("Wake up Word: " + wakeupword);
 
                 console.log('Testing started...')
                 console.log('Iteration Count: ' + iteration.value)
@@ -185,8 +191,8 @@ function Scheduler(){
             var intentArrLen = intents.length
             var currUtterArrLen = intents[intentID].length
 
-            console.log(intentArrLen);
-            console.log(currUtterArrLen);
+            // console.log(intentArrLen);
+            // console.log(currUtterArrLen);
             
             callback(intentName, utterText, intentArrLen, response, sla, currUtterArrLen, startRecognition);
               
@@ -250,19 +256,29 @@ function Scheduler(){
 
 var test = function (intentName, utterText, intentArrLen, response, sla, currUtterArrLen, callback) {
 
+    console.log("Starting test for " + intentName + " - " +  utterText)
+
     var wakeup = new SpeechSynthesisUtterance();
     wakeup.voice = voiceMap[voiceOptions.value]; 
+    //wakeup.voice = voiceMap[voice];
     wakeup.volume = volumeSlider.value;
     wakeup.rate = rateSlider.value;
     wakeup.pitch = pitchSlider.value;
-    wakeup.text = 'Alexa';
+    wakeup.text = wakeupword;
+
+    console.log(wakeup.voice);
+    console.log(wakeup.text);
 
     var msg = new SpeechSynthesisUtterance();
     msg.voice = voiceMap[voiceOptions.value]; 
+    //msg.voice = voiceMap[voice];
     msg.volume = volumeSlider.value;
     msg.rate = rateSlider.value;
     msg.pitch = pitchSlider.value;
     msg.text = utterText;
+
+    console.log(msg.voice);
+    console.log(msg.text);
 
     console.log("Listen to the speech now");
     
@@ -271,7 +287,9 @@ var test = function (intentName, utterText, intentArrLen, response, sla, currUtt
     
     time = performance.now();
     window.speechSynthesis.speak(wakeup);
-    wait();
+    console.log(performance.now());
+    wait(3000);
+    console.log(performance.now());
     window.speechSynthesis.speak(msg);
 
     msg.onend = function (event){
@@ -305,43 +323,26 @@ var startRecognition = function (intentName, utterText, response, sla, intentArr
         newDate =  new Date(Date.now());
         detectduration = Math.ceil(newTime - time);
 
-        console.log("The Alexa/User speech detected at "+ newDate.toLocaleString('en-US', { timeZone: 'Asia/Kolkata' }) + " which is " + detectduration + " ms since recognition service started");
+        console.log("Device speech detected at "+ newDate.toLocaleString('en-US', { timeZone: 'Asia/Kolkata' }) + " which is " + detectduration + " ms since recognition service started");
     }
 
-    // speechRecognizer.onaudiostart = function (event){
-
-    //     newTime = performance.now();
-    //     newDate =  new Date(Date.now());
-    //     detectduration = Math.ceil(newTime - time);
-
-    //     console.log("The Alexa/User audio started at "+ newDate.toLocaleString('en-US', { timeZone: 'Asia/Kolkata' }) + " which is " + detectduration + " ms since recognition service started");
-    // }
-
-    // speechRecognizer.onaudioend = function (event){
-
-    //     newTime = performance.now();
-    //     newDate =  new Date(newTime);
-    //     detectduration = Math.ceil(newTime - time);
-
-    //     console.log("The Alexa/User audio ended at "+ newDate.toLocaleString('en-US', { timeZone: 'Asia/Kolkata' }) + " which is " + detectduration + " ms since recognition service started");
-    // }
-
-
-    speechRecognizer.onspeechend = function (event){
+    speechRecognizer.onaudiostart = function (event){
 
         newTime = performance.now();
         newDate =  new Date(Date.now());
-        endduration = Math.ceil(newTime - time);
+        detectduration = Math.ceil(newTime - time);
 
-        console.log("No more detection as of "+ newDate.toLocaleString('en-US', { timeZone: 'Asia/Kolkata' }) + " which is " + endduration + " ms since recognition service started");
+        console.log("Device audio started at "+ newDate.toLocaleString('en-US', { timeZone: 'Asia/Kolkata' }) + " which is " + detectduration + " ms since recognition service started");
+    }
 
-        speechRecognizer.abort();
-        console.log("Speech Recognition intentionally aborted");
+    speechRecognizer.onaudioend = function (event){
 
-        if(!speechRecognizer.onend){
-            speechRecognizer.onend();
-        }
-    }                  
+        newTime = performance.now();
+        newDate =  new Date(newTime);
+        detectduration = Math.ceil(newTime - time);
+
+        console.log("Device audio ended at "+ newDate.toLocaleString('en-US', { timeZone: 'Asia/Kolkata' }) + " which is " + detectduration + " ms since recognition service started");
+    }              
 
     speechRecognizer.onresult = function(event){
 
@@ -349,7 +350,7 @@ var startRecognition = function (intentName, utterText, response, sla, intentArr
         newDate =  new Date(Date.now());
         completeduration = Math.ceil(newTime - time);
 
-        console.log("The Alexa/User response completed at "+ newDate.toLocaleString('en-US', { timeZone: 'Asia/Kolkata' })  + " which is " + completeduration + " ms since recognition service started");
+        console.log("Device response completed at "+ newDate.toLocaleString('en-US', { timeZone: 'Asia/Kolkata' })  + " which is " + completeduration + " ms since recognition service started");
         
         for(var i = event.resultIndex; i < event.results.length; i++){
             var transcript = event.results[i][0].transcript;
@@ -361,8 +362,14 @@ var startRecognition = function (intentName, utterText, response, sla, intentArr
                 interimTranscripts += transcript;
             }
 
-            console.log("Alexa's response as recognized: " + finalTranscripts);
+            console.log("Device response as recognized: " + finalTranscripts);
 
+            console.log(performance.now());
+
+            //wait(10000);
+
+            console.log(performance.now());
+            
             speechRecognizer.continuous = false;
 
             speechRecognizer.abort();
@@ -380,7 +387,6 @@ var startRecognition = function (intentName, utterText, response, sla, intentArr
 
             var row = table.insertRow(-1);
 
-            // Insert new cells (<td> elements) at the 1st and 2nd position of the "new" <tr> element:
             var cell1 = row.insertCell(0);
             var cell2 = row.insertCell(1);
             var cell3 = row.insertCell(2);
@@ -404,7 +410,22 @@ var startRecognition = function (intentName, utterText, response, sla, intentArr
         if(!speechRecognizer.onend){
             speechRecognizer.onend();
         }
+    }
 
+    speechRecognizer.onspeechend = function (event){
+
+        newTime = performance.now();
+        newDate =  new Date(Date.now());
+        endduration = Math.ceil(newTime - time);
+
+        console.log("No further detection as of "+ newDate.toLocaleString('en-US', { timeZone: 'Asia/Kolkata' }) + " which is " + endduration + " ms since recognition service started");
+
+        speechRecognizer.abort();
+        console.log("Speech Recognition intentionally aborted");
+
+        if(!speechRecognizer.onend){
+            speechRecognizer.onend();            
+        }
     }
 
     speechRecognizer.onend = function (event){
@@ -414,11 +435,14 @@ var startRecognition = function (intentName, utterText, response, sla, intentArr
         console.log("Recognition service stopped at " + newDate.toLocaleString('en-US', { timeZone: 'Asia/Kolkata' }) );
 
         if(scheduler.isOn){
+            
+            console.log("Waiting before next utterance...");
+
+            wait(5000);
 
             scheduler.next(intentArrLen, currUtterArrLen, test);
               
-        }
-        
+        }        
     }
 
     speechRecognizer.onnomatch = function (event){
@@ -427,7 +451,7 @@ var startRecognition = function (intentName, utterText, response, sla, intentArr
         newDate =  new Date(Date.now());
         nodetectduration = Math.ceil(newTime - time);
 
-         console.log("No speech detected till "+ newDate.toLocaleString('en-US', { timeZone: 'Asia/Kolkata' })  + " which is " + nodetectduration + " ms since recognition service started");
+        console.log("No speech detected till "+ newDate.toLocaleString('en-US', { timeZone: 'Asia/Kolkata' })  + " which is " + nodetectduration + " ms since recognition service started");
 
         speechRecognizer.abort();
 
@@ -436,7 +460,6 @@ var startRecognition = function (intentName, utterText, response, sla, intentArr
         if(!speechRecognizer.onend){
             speechRecognizer.onend();
         }
-
     }
 
     speechRecognizer.onerror = function(event){
@@ -454,8 +477,7 @@ var startRecognition = function (intentName, utterText, response, sla, intentArr
         console.log("Speech Recognition intentionally aborted");
 
         newTime = 0;
-        errorduration = 0; 
-
+        errorduration = 0;
     }
 };
 
