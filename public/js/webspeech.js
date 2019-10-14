@@ -415,7 +415,7 @@ var startRecognition = function (intentName, utterText, response, sla, intentArr
 
         }
 
-        if(this.isOn){
+        if(scheduler.isOn){
             speechRecognizer.onend();            
         }
     }
@@ -446,7 +446,7 @@ var startRecognition = function (intentName, utterText, response, sla, intentArr
 
         if(scheduler.isOn){
 
-            this.isOn = false;            
+            scheduler.isOn = false;            
             
             console.log("Test for intent '" + intentName + "' - Utterance '" + utterText + "' completed");
 
@@ -463,7 +463,7 @@ var startRecognition = function (intentName, utterText, response, sla, intentArr
 
         console.log("No speech detected till "+ newDate.toLocaleString('en-US', { timeZone: 'Asia/Kolkata' })  + " which is " + nodetectduration + " ms since recognition service started");
 
-        if(this.isOn){
+        if(scheduler.isOn){
 
             speechRecognizer.abort();
             speechRecognizer.onend();            
@@ -480,7 +480,7 @@ var startRecognition = function (intentName, utterText, response, sla, intentArr
 
         console.log("Recognition Error: " + completeError + " at "+ newDate.toLocaleString('en-US', { timeZone: 'Asia/Kolkata' })  + " which is " + errorduration + " ms since recognition service started");
 
-        if(this.isOn){
+        if(scheduler.isOn){
 
             speechRecognizer.abort();
             speechRecognizer.onend();            
