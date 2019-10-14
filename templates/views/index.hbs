@@ -64,29 +64,29 @@
 
         </div>
 
-        <div id="scheduler" class="container mt-2">
+        <div id="scheduler" class="container p-5 border border-primary">
 
             {{!-- <div class="row justify-content-between">
 
-                <div class="col-lg-12 m-1 border border-primary p-2 bg-gradient-primary"> --}}
+                <div class="col-lg-12 m-1 border border-secondary p-2 bg-gradient-primary"> --}}
 
                     <h4>Smart Speakers - End User Performance Evaluator</h4>
 
-                    <div class="row justify-content-around">
+                    <div class="row justify-content-around p-2 border border-secondary bg-gradient-primary">
 
-                        <div class="col-lg-8">
-                            <label class="mt-2 mb-2">
+                        <div class="col-lg-4">
+                            <label >
                                 <span class="strong">Mic Status: </span>
                                 <span id="micstatus" class="strong"></span>
                                 <div>
-                                <input class="mt-3 mb-3 btn btn-md btn-primary" id="resume" value="Check"/>
+                                <input class="mt-2 p-2 btn btn-md btn-primary" id="resume" value="Check"/>
                                 </div>
                             </label>
                         </div>
 
-                        <div id="meters" class="col-lg-4">
+                        <div id="meters" class="mt-4 col-lg-8">
 
-                            <div id="instant" class="mt-4 mb-2">
+                            <div id="instant">
                                 <div class="label">Instant:</div>
                                 <meter high="0.25" max="1" value="0"></meter>
                                 <div class="value"></div>
@@ -96,20 +96,20 @@
                         
                     </div>                    
 
-                    <div>
-                        <input class="mt-2 mb-2 btn btn-lg" type="file" id="fileUpload" />
+                    <div class="row justify-content-around mt-2 mb-2 p-2 border border-secondary bg-gradient-primary">
+                        <input class="btn btn-lg" type="file" id="fileUpload" />
                     </div>
                     
-                    <div class="row justify-content-around">
+                    <div class="row justify-content-around mt-2 mb-2 p-2 border border-secondary bg-gradient-primary">
 
                         <div class="col-lg-4">
-                            <label class="m-2">
+                            <label>
                                 <span id="intents" class="strong">Intents Detected: </span>
                             </label>
                         </div>
 
                         <div class="col-lg-4">
-                            <label class="m-2">
+                            <label>
                                 <span class="strong">Wakeup Word</span>
                                 <div>
                                     <input id="wakeupword">
@@ -118,7 +118,7 @@
                         </div>
 
                         <div class="col-lg-4">
-                            <label class="m-2">
+                            <label>
                                 <span class="strong">Iteration</span>
                                 <div>
                                     <input type="number" step="1" id="iteration">
@@ -128,10 +128,10 @@
 
                     </div>
 
-                    <div class="row justify-content-around">
+                    <div class="row justify-content-around mt-2 mb-2 p-2 border border-secondary bg-gradient-primary">
 
                         <div class="col-lg-3">
-                            <label class="m-2">
+                            <label>
                                 <span class="strong">Voice</span>
                                 <div>
                                     <select id="voiceOptions">
@@ -145,7 +145,7 @@
                         </div>
 
                         <div class="col-lg-3">
-                            <label class="m-2">
+                            <label>
                                     <span>Volume  </span>
                                     <div>
                                     <input type="range" id="volumeSlider" min="0" max="1" step="0.1" value="1">
@@ -154,7 +154,7 @@
                         </div>
 
                         <div class="col-lg-3">       
-                            <label class="m-2">
+                            <label>
                                     <span>Rate    </span>
                                     <div>
                                     <input type="range" id="rateSlider" min="0" max="1" step="0.1" value="0.9">
@@ -163,7 +163,7 @@
                         </div>
 
                         <div class="col-lg-3">
-                            <label class="m-2">
+                            <label>
                                     <span>Pitch   </span>
                                     <div>
                                     <input type="range" id="pitchSlider" min="0" max="2" step="0.1" value="0.8">
@@ -180,7 +180,7 @@
 
                 {{!-- </div> --}}
 
-                {{!-- <div class="col-lg-4 m-1 border border-primary p-5 bg-gradient-primary">
+                {{!-- <div class="col-lg-4 m-1 border border-secondary p-5 bg-gradient-primary">
 
                     <h4>Check your Microphone before testing</h4>
 
@@ -213,7 +213,7 @@
 
             <div class="row justify-content-between">
 
-                <div class="col-lg-12 border border-primary p-5 bg-gradient-primary"> --}}
+                <div class="col-lg-12 border border-secondary p-5 bg-gradient-primary"> --}}
 
                     <div class="m-4 border border-primary p-5 bg-gradient-primary">
 
