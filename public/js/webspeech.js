@@ -52,7 +52,10 @@ function loadVoices () {
         var voice = voices[i];
         var option = document.createElement('option');
         option.value = voice.name;
-        option.innerhtml = voice.name;
+        option.textContent = voice.name;
+        if(voice.name === "Google UK English Male"){
+            option.selected = true;
+        }
         voiceOptions.appendChild(option);
         //console.log("Voice " + i + " - " + voice.name);
         voiceMap[voice.name] = voice;
@@ -69,7 +72,7 @@ function sleep(ms){
 
 async function wait(ms, callback){
 
-    console.log('Waiting for ' + ms + ' sec for some recognition event to happen');
+    console.log('Waiting for ' + ms + ' milliseconds for some recognition event to happen');
     await sleep(ms);    
 
     for (var i = 0; i < 5; i++){
@@ -78,9 +81,9 @@ async function wait(ms, callback){
         }
     }
 
-    if(!callback){
-        callback();           
-    }
+    console.log('Calling End event since no other event happened');
+    
+    callback();
 }
 
 async function pause(ms){
@@ -97,7 +100,7 @@ async function pause(ms){
 
 async function thinktime(ms){
 
-    console.log('Waiting for ' + ms + ' sec before next utterance');
+    console.log('Waiting for ' + ms + ' milliseconds before next utterance');
     await sleep(ms);    
 
     for (var i = 0; i < 5; i++){
@@ -182,7 +185,7 @@ testBtn.addEventListener('click', function(){
                 testBtn.disabled = true;
 
                 iteration = document.getElementById('iteration');
-                wakeupword = document.getElementById('wakeupword').value;
+                wakeupword = document.getElementById('wakeupword');
 
                 console.log('Testing started... Iteration Count: ' + iteration.value);
 
@@ -228,7 +231,7 @@ function Scheduler(){
 
         if(utterID < currUtterArrLen-1){
 
-            thinktime(5000);
+            thinktime(8000);
             utterID++;
             scheduler.start();            
         }
@@ -250,7 +253,7 @@ function Scheduler(){
                 if(currIter < iteration.value){
 
                     console.log("Iteration '" + currIter + "' completed");
-                    thinktime(5000);
+                    thinktime(8000);
 
                     currIter++;
                     utterID = 0;
@@ -285,7 +288,7 @@ var test = function (intentName, utterText, intentArrLen, response, sla, currUtt
     wakeup.volume = volumeSlider.value;
     wakeup.rate = rateSlider.value;
     wakeup.pitch = pitchSlider.value;
-    wakeup.text = wakeupword;
+    wakeup.text = wakeupword.value;
 
     var msg = new SpeechSynthesisUtterance();
     msg.voice = voiceMap[voiceOptions.value]; 
@@ -373,7 +376,7 @@ var startRecognition = function (intentName, utterText, response, sla, intentArr
 
             console.log("Device response as recognized: " + finalTranscripts);
 
-            pause(8000);
+            pause(10000);
 
             console.log("Speech completed at "+ newDate.toLocaleString('en-US', { timeZone: 'Asia/Kolkata' })  + " which is " + completeduration + " ms since recognition service started");
             
@@ -484,7 +487,7 @@ var startRecognition = function (intentName, utterText, response, sla, intentArr
         }
     }
 
-    wait(20000, speechRecognizer.onend)
+    //wait(40000, speechRecognizer.onend)
 
 };
 
