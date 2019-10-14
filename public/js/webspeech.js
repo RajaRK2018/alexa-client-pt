@@ -340,23 +340,23 @@ var startRecognition = function (intentName, utterText, response, sla, intentArr
         console.log("Speech detected at "+ newDate.toLocaleString('en-US', { timeZone: 'Asia/Kolkata' }) + " which is " + detectduration + " ms since recognition service started");
     }
 
-    // speechRecognizer.onaudiostart = function (){
+    speechRecognizer.onaudiostart = function (){
 
-    //     newTime = performance.now();
-    //     newDate =  new Date(Date.now());
-    //     detectduration = Math.ceil(newTime - time);
+        newTime = performance.now();
+        newDate =  new Date(Date.now());
+        detectduration = Math.ceil(newTime - time);
 
-    //     console.log("Audio started at "+ newDate.toLocaleString('en-US', { timeZone: 'Asia/Kolkata' }) + " which is " + detectduration + " ms since recognition service started");
-    // }
+        console.log("Audio started at "+ newDate.toLocaleString('en-US', { timeZone: 'Asia/Kolkata' }) + " which is " + detectduration + " ms since recognition service started");
+    }
 
-    // speechRecognizer.onaudioend = function (){
+    speechRecognizer.onaudioend = function (){
 
-    //     newTime = performance.now();
-    //     newDate =  new Date(newTime);
-    //     detectduration = Math.ceil(newTime - time);
+        newTime = performance.now();
+        newDate =  new Date(newTime);
+        detectduration = Math.ceil(newTime - time);
 
-    //     console.log("Audio ended at "+ newDate.toLocaleString('en-US', { timeZone: 'Asia/Kolkata' }) + " which is " + detectduration + " ms since recognition service started");
-    // }              
+        console.log("Audio ended at "+ newDate.toLocaleString('en-US', { timeZone: 'Asia/Kolkata' }) + " which is " + detectduration + " ms since recognition service started");
+    }              
 
     speechRecognizer.onresult = function(event){
 
@@ -376,13 +376,13 @@ var startRecognition = function (intentName, utterText, response, sla, intentArr
 
             console.log("Device response as recognized: " + finalTranscripts);
 
-            pause(10000);
+            //pause(10000);
 
             console.log("Speech completed at "+ newDate.toLocaleString('en-US', { timeZone: 'Asia/Kolkata' })  + " which is " + completeduration + " ms since recognition service started");
             
-            // speechRecognizer.continuous = false;
+            //speechRecognizer.continuous = false;
 
-            speechRecognizer.abort();
+            //speechRecognizer.abort();
 
             if(detectduration>sla){
                 var slacompliance = 'Bad'
@@ -415,10 +415,10 @@ var startRecognition = function (intentName, utterText, response, sla, intentArr
 
         }
 
-        if(scheduler.isOn){
+        // if(scheduler.isOn){
 
-            speechRecognizer.onend();            
-        }
+        //     speechRecognizer.abort();            
+        // }
     }
 
     speechRecognizer.onspeechend = function (event){
@@ -429,11 +429,6 @@ var startRecognition = function (intentName, utterText, response, sla, intentArr
 
         console.log("Current detection stopped at "+ newDate.toLocaleString('en-US', { timeZone: 'Asia/Kolkata' }) + " which is " + endduration + " ms since recognition service started");
 
-        // if(this.isOn){
-
-        //     speechRecognizer.abort();
-        //     speechRecognizer.onend();            
-        // }
     }
 
     speechRecognizer.onend = function (){    
@@ -466,8 +461,7 @@ var startRecognition = function (intentName, utterText, response, sla, intentArr
 
         if(scheduler.isOn){
 
-            speechRecognizer.abort();
-            speechRecognizer.onend();            
+            speechRecognizer.abort();            
         }
     }
 
@@ -481,14 +475,13 @@ var startRecognition = function (intentName, utterText, response, sla, intentArr
 
         console.log("Recognition Error: " + completeError + " at "+ newDate.toLocaleString('en-US', { timeZone: 'Asia/Kolkata' })  + " which is " + errorduration + " ms since recognition service started");
 
-        if(scheduler.isOn){
+        // if(scheduler.isOn){
 
-            speechRecognizer.abort();
-            speechRecognizer.onend();            
-        }
+        //     speechRecognizer.onend();            
+        // }
     }
 
-    wait(20000, speechRecognizer.onend)
+    //wait(20000, speechRecognizer.onend)
 
 };
 
