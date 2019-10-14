@@ -382,6 +382,8 @@ var startRecognition = function (intentName, utterText, response, sla, intentArr
             
             // speechRecognizer.continuous = false;
 
+            speechRecognizer.abort();
+
             if(detectduration>sla){
                 var slacompliance = 'Bad'
             }
@@ -414,8 +416,7 @@ var startRecognition = function (intentName, utterText, response, sla, intentArr
         }
 
         if(scheduler.isOn){
-            
-            speechRecognizer.abort();
+
             speechRecognizer.onend();            
         }
     }
