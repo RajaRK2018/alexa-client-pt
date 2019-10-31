@@ -204,68 +204,65 @@
 
         </div>
 
-        {{!-- <div class="container mt-5 mb-5">
+        <div class="m-4 border border-primary p-5 bg-gradient-primary">
 
-            <div class="row justify-content-between">
+            <div class="wrap">
 
-                <div class="col-lg-12 border border-secondary p-5 bg-gradient-primary"> --}}
+                <table id="results_table_head" class="head">
 
-                    <div class="m-4 border border-primary p-5 bg-gradient-primary">
+                    <colgroup>
+                        <col style="width:7%">
+                        <col style="width:17%">
+                        <col style="width:20%">
+                        <col style="width:7%">
+                        <col style="width:7%">                    
+                        <col style="width:7%">
+                        <col style="width:7%">
+                        <col style="width:7%">
+                        <col style="width:7%">
+                        <col style="width:7%">
+                        <col style="width:7%">
+                    </colgroup>
 
-                        <div class="wrap">
+                    <tr>
+                    <th id="uid">Intent Name</th>
+                    <th>Utterance</th>
+                    <th>Device Response</th>
+                    <th>Assertion Text</th>
+                    <th>Assertion Status</th>
+                    <th>Response Time SLA</th>
+                    <th>SLA Compliance</th>
+                    <th>Time to Speech Start (ms)</th>
+                    <th>Time to Result Start (ms)</th>
+                    <th>Time to Result End (ms)</th>                    		  
+                    <th>Retry Count</th>
+                    </tr>
 
-                            <table id="results_table_head" class="head">
+                </table>
+                <div class="inner_table">
+                    <table id="results_table">
 
-                                <colgroup>
-                                <col style="width:10%">
-                                <col style="width:10%">
-                                {{!-- <col style="width:10%"> --}}
-                                <col style="width:20%">
-                                <col style="width:10%">
-                                <col style="width:10%">
-                                <col style="width:10%">
-                                <col style="width:10%">
-                                </colgroup>
+                        <colgroup>
+                        <col style="width:7%">
+                        <col style="width:17%">
+                        <col style="width:20%">
+                        <col style="width:7%">
+                        <col style="width:7%">
+                        <col style="width:7%">
+                        <col style="width:7%">
+                        <col style="width:7%">
+                        <col style="width:7%">
+                        <col style="width:7%">
+                        <col style="width:7%">
+                        </colgroup>
 
-                                <tr>
-                                <th id="uid">Intent Name</th>
-                                <th>Utterance</th>
-                                {{!-- <th>Expected Response</th> --}}
-                                <th>Actual Response</th>
-                                <th>Response Time SLA</th>
-                                <th>SLA Compliance</th>
-                                <th>Time to Detection (ms)</th>
-                                <th>Time to Completion (ms)</th>                            		  
-                                </tr>
+                    </table>
 
-                            </table>
-                            <div class="inner_table">
-                                <table id="results_table">
+                </div>
 
-                                    <colgroup>
-                                    <col style="width:10%">
-                                    <col style="width:10%">
-                                    {{!-- <col style="width:10%"> --}}
-                                    <col style="width:20%">
-                                    <col style="width:10%">
-                                    <col style="width:10%">
-                                    <col style="width:10%">
-                                    <col style="width:10%">
-                                    </colgroup>
-
-                                </table>
-
-                            </div>
-
-                        </div>
-                    
-                    </div>
-
-                {{!-- </div>
-
-             </div>
-
-        </div> --}}
+            </div>
+        
+        </div>
 
         <script type="text/javascript" src="./js/webspeech.js"></script>
         <script type="text/javascript" src="./js/adapter-latest.js"></script>
