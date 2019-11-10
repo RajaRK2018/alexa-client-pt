@@ -46,27 +46,41 @@ app.post('/test/result', (req, res) => {
     const createResult = () => {
 
         if(req.body.assertionstatus === 'Pass'){
-            pass = 1;        
-        } else{
-            fail = 1;
-        }
-    
-        if(req.body.timeToSpeechStart > req.body.sla){
-            slaCompliance = 'Bad'
-        }
+
+            pass = 1;
+
+            min = req.body.timeToSpeechStart;
+            avg = req.body.timeToSpeechStart;
+            max = req.body.timeToSpeechStart;
+            curr = req.body.timeToSpeechStart;
+            
+            if(req.body.timeToSpeechStart > req.body.sla){
+                slaCompliance = 'Bad'
+            }
+            else{
+                slaCompliance = 'Good'
+            }
+        } 
+        
         else{
-            slaCompliance = 'Good'
+
+            fail = 1;
+            min = "-";
+            avg = "-";
+            max = "-";
+            curr = "-";
+            slaCompliance = "-";
         }
         
         result = {
             intentName: req.body.intentName,
             utterText: req.body.utterText,
-            min: req.body.timeToSpeechStart,
-            avg: req.body.timeToSpeechStart,
-            max: req.body.timeToSpeechStart,
-            curr: req.body.timeToSpeechStart,
-            pass: pass,
-            fail: fail,
+            min,
+            avg,
+            max,
+            curr,
+            pass,
+            fail,
             sla: req.body.sla,
             slaCompliance,
             resultData: [req.body]
@@ -117,31 +131,61 @@ app.post('/test/result', (req, res) => {
 
                 console.log('printing pass result data');
                 console.log(passResultData);
-    
-                results[i].min = passResultData.reduce((min, current) => {           
-                    return Math.min(min, current.timeToSpeechStart)
-                }, passResultData[0].timeToSpeechStart);
-    
-                results[i].avg = passResultData.reduce((sum, current) => {                  
-                    return (sum + current.timeToSpeechStart)
-                }, 0) / passResultData.length     
-                
-                results[i].avg = Math.round(results[i].avg * 1000) / 1000;
-    
-                results[i].max = passResultData.reduce((max, current) => {                  
-                    return Math.max(max, current.timeToSpeechStart)
-                }, passResultData[0].timeToSpeechStart);
-    
-                results[i].curr = req.body.timeToSpeechStart;
-                results[i].pass = passResultData.length;
-                results[i].fail = results[i].resultData.length - passResultData.length;
-    
-                if(results[i].avg > req.body.sla){
-                    results[i].slaCompliance = 'Bad'
+
+                if(passResultData.length > 0){
+
+                    if(req.body.assertionstatus === 'Pass'){
+
+                        results[i].min = passResultData.reduce((min, current) => {           
+                            return Math.min(min, current.timeToSpeechStart)
+                        }, passResultData[0].timeToSpeechStart);
+            
+                        results[i].avg = passResultData.reduce((sum, current) => { 
+                            
+                            console.log('printing sum after in the loop');
+                            console.log(sum);  
+
+                            return (sum + current.timeToSpeechStart);                                                   
+                            
+                        }, 0) / passResultData.length;
+
+                        console.log('printing avg before rounding');
+                        console.log(results[i].avg);                       
+                        
+                        
+                        results[i].avg = Math.round(results[i].avg * 1000) / 1000;
+
+                        console.log('printing avg after rounding');
+                        console.log(results[i].avg);
+            
+                        results[i].max = passResultData.reduce((max, current) => {                  
+                            return Math.max(max, current.timeToSpeechStart)
+                        }, passResultData[0].timeToSpeechStart);
+            
+                        results[i].curr = req.body.timeToSpeechStart;
+                        results[i].pass = passResultData.length;
+                        results[i].fail = results[i].resultData.length - passResultData.length;
+            
+                        if(results[i].avg > req.body.sla){
+                            results[i].slaCompliance = 'Bad'
+                        }
+                        else{
+                            results[i].slaCompliance = 'Good'
+                        }
+
+                    }
+
+                    else{
+
+                        results[i].fail = results[i].resultData.length - passResultData.length;
+                    }                 
+
                 }
+
                 else{
-                    results[i].slaCompliance = 'Good'
-                }
+
+                    results[i].fail = results[i].resultData.length;
+                }               
     
                 filteredResult = Object.keys(results[i])
                     .filter(key => filterKeys.includes(key))
@@ -154,9 +198,6 @@ app.post('/test/result', (req, res) => {
             } 
         }        
     }
-
-    console.log('prinitng results towards');
-    console.log(results);
 
     console.log('final filtered result');
     console.log(filteredResult);

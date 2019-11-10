@@ -518,32 +518,65 @@ var startRecognition = function (intentName, utterText, assertiontext, sla, inte
                 console.log(Object.keys(result));
 
                 console.log(Object.values(result));
-    
-                var row = table.insertRow(-1);
 
-                //row.id = result.intentName + result.utterText;
+                var rowid = result.intentName.concat(" - ", result.utterText);
 
-                var cell1 = row.insertCell(0);
-                var cell2 = row.insertCell(1);
-                var cell3 = row.insertCell(2);
-                var cell4 = row.insertCell(3);
-                var cell5 = row.insertCell(4);
-                var cell6 = row.insertCell(5);
-                var cell7 = row.insertCell(6);
-                var cell8 = row.insertCell(7);
-                var cell9 = row.insertCell(8);
-                var cell10 = row.insertCell(9);
+                var rows = table.getElementsByTagName("tr");
 
-                cell1.innerHTML = result.intentName;
-                cell2.innerHTML = result.utterText;
-                cell3.innerHTML = result.min;
-                cell4.innerHTML = result.avg;
-                cell5.innerHTML = result.max;
-                cell6.innerHTML = result.curr;
-                cell7.innerHTML = result.pass;
-                cell8.innerHTML = result.fail;
-                cell9.innerHTML = result.sla;
-                cell10.innerHTML = result.slaCompliance;
+                for (var r = 0; r <= rows.length; r++){
+
+                    if(r == rows.length){
+
+                        var row = table.insertRow(-1);
+
+                        row.id = rowid;
+
+                        var cell1 = row.insertCell(0);
+                        var cell2 = row.insertCell(1);
+                        var cell3 = row.insertCell(2);
+                        var cell4 = row.insertCell(3);
+                        var cell5 = row.insertCell(4);
+                        var cell6 = row.insertCell(5);
+                        var cell7 = row.insertCell(6);
+                        var cell8 = row.insertCell(7);
+                        var cell9 = row.insertCell(8);
+                        var cell10 = row.insertCell(9);
+
+                        cell1.innerHTML = result.intentName;
+                        cell2.innerHTML = result.utterText;
+                        cell3.innerHTML = result.min;
+                        cell4.innerHTML = result.avg;
+                        cell5.innerHTML = result.max;
+                        cell6.innerHTML = result.curr;
+                        cell7.innerHTML = result.pass;
+                        cell8.innerHTML = result.fail;
+                        cell9.innerHTML = result.sla;
+                        cell10.innerHTML = result.slaCompliance;
+                        
+                        break;
+                    } 
+
+                    if (rows[r].id === rowid){
+
+                        console.log(rows[r]);
+
+                        var cells = rows[r].getElementsByTagName("td");
+
+                        cells[0].innerHTML = result.intentName;
+                        cells[1].innerHTML = result.utterText;
+                        cells[2].innerHTML = result.min;
+                        cells[3].innerHTML = result.avg;
+                        cells[4].innerHTML = result.max;
+                        cells[5].innerHTML = result.curr;
+                        cells[6].innerHTML = result.pass;
+                        cells[7].innerHTML = result.fail;
+                        cells[8].innerHTML = result.sla;
+                        cells[9].innerHTML = result.slaCompliance;
+
+                        break;
+
+                    }
+                }               
 
                 console.log("Test for intent '" + intentName + "' - Utterance '" + utterText + "' completed");
 
