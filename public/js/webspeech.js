@@ -24,6 +24,8 @@ checkCompatibilityForSpeechSynthesis();
 
 checkCompatibilityForSpeechRecognition();
 
+var table = document.getElementById("results_table");
+
 var fileUpload = document.getElementById('fileUpload');
 
 var voiceOptions = document.getElementById('voiceOptions');
@@ -59,6 +61,8 @@ var timeToNoMatch = 0;
 var resultCounter = 0;
 var retry = 0;
 var retrycount = 0;
+
+var resultSet = {};
 
 function loadVoices () {
 
@@ -174,6 +178,8 @@ function Scheduler(){
             var utterText = intents[intentID][utterID].utterance
             var assertiontext = intents[intentID][utterID].assertiontext.toLowerCase()
             var sla = intents[intentID][utterID].sla
+            sla = parseFloat(sla) / 1000;
+            sla = sla.toFixed(3);
             var intentArrLen = intents.length
             var currUtterArrLen = intents[intentID].length
             
@@ -315,7 +321,7 @@ var startRecognition = function (intentName, utterText, assertiontext, sla, inte
 
     var finalTranscripts = '';
     var assertionstatus = '';
-    var slacompliance = '';
+    var slaCompliance = '';
     
     var firstEventTimeout;
     var resultRecogTimeout;
@@ -343,9 +349,9 @@ var startRecognition = function (intentName, utterText, assertiontext, sla, inte
         console.log("Clearing firstEventTimeout as SpeechStart event is triggered");
         clearTimeout(firstEventTimeout);
         isSpeechStart = true;
-        timeToSpeechStart = Math.ceil(newTime - time);
+        timeToSpeechStart = ((newTime - time) / 1000).toFixed(3);
 
-        console.log("Speech detected at "+ newDate.toLocaleString('en-US', { timeZone: 'Asia/Kolkata' }) + " which is " + timeToSpeechStart + " ms since utterance completed");
+        console.log("Speech detected at "+ newDate.toLocaleString('en-US', { timeZone: 'Asia/Kolkata' }) + " which is " + timeToSpeechStart + " sec since utterance completed");
 
         resultRecogTimeout = setTimeout(() => {
 
@@ -367,9 +373,9 @@ var startRecognition = function (intentName, utterText, assertiontext, sla, inte
             clearTimeout(resultRecogTimeout);
             isResult = true;
             isResultStop = false;
-            timeToResultStart = Math.ceil(resultStartTime - time);
+            timeToResultStart = ((resultStartTime - time) / 1000).toFixed(3);
             
-            console.log("Initial Result Recognized for " + utterText + " at " + newDate.toLocaleString('en-US', { timeZone: 'Asia/Kolkata' }) + " which is " + timeToResultStart + " ms since utterance completed");
+            console.log("Initial Result Recognized for " + utterText + " at " + newDate.toLocaleString('en-US', { timeZone: 'Asia/Kolkata' }) + " which is " + timeToResultStart + " sec since utterance completed");
             resultCounter++;
 
         }
@@ -378,9 +384,9 @@ var startRecognition = function (intentName, utterText, assertiontext, sla, inte
             newTime = performance.now();
             newDate =  new Date(Date.now());
             isResultStop = false;     
-            timeToNewResultStart = Math.ceil(newTime - time);               
+            timeToNewResultStart = ((newTime - time) / 1000).toFixed(3);               
 
-            console.log("More Result Recognized for " + utterText + " at " + newDate.toLocaleString('en-US', { timeZone: 'Asia/Kolkata' }) + " which is " + timeToNewResultStart + " ms since utterance completed");
+            console.log("More Result Recognized for " + utterText + " at " + newDate.toLocaleString('en-US', { timeZone: 'Asia/Kolkata' }) + " which is " + timeToNewResultStart + " sec since utterance completed");
             resultCounter++;
         }       
 
@@ -396,8 +402,8 @@ var startRecognition = function (intentName, utterText, assertiontext, sla, inte
 
                 resultEndTime = performance.now();                
                 resultEndDate =  new Date(Date.now());
-                timeToResultEnd = Math.ceil(resultEndTime - time);
-                finalTranscripts += transcript;console.log("Latest Result event for " + utterText + " completed at " + newDate.toLocaleString('en-US', { timeZone: 'Asia/Kolkata' }) + " which is " + timeToResultEnd + " ms since utterance completed");                
+                timeToResultEnd = ((resultEndTime - time) / 1000).toFixed(3);
+                finalTranscripts += transcript;console.log("Latest Result event for " + utterText + " completed at " + newDate.toLocaleString('en-US', { timeZone: 'Asia/Kolkata' }) + " which is " + timeToResultEnd + " sec since utterance completed");                
             }
             
             else{
@@ -427,13 +433,13 @@ var startRecognition = function (intentName, utterText, assertiontext, sla, inte
         newDate =  new Date(Date.now());
         isSpeechStart = false;
         isResultStop = true;        
-        timeToSpeechEnd = Math.ceil(newTime - time);        
+        timeToSpeechEnd = ((newTime - time) / 1000).toFixed(3);        
 
-        console.log("Current speech detection stopped at "+ newDate.toLocaleString('en-US', { timeZone: 'Asia/Kolkata' }) + " which is " + timeToSpeechEnd + " ms since utterance completed"); 
+        console.log("Current speech detection stopped at "+ newDate.toLocaleString('en-US', { timeZone: 'Asia/Kolkata' }) + " which is " + timeToSpeechEnd + " sec since utterance completed"); 
 
     }
 
-    speechRecognizer.onend = function (){    
+    speechRecognizer.onend = async function (){    
         
         speechEndDate =  new Date(Date.now());
         isResultStop = true;
@@ -459,7 +465,7 @@ var startRecognition = function (intentName, utterText, assertiontext, sla, inte
                 retry = 0;
                 finalTranscripts = 'Not Found';
                 assertionstatus = 'Fail'
-                slacompliance = 'NA';
+                //slaCompliance = 'NA';
                 timeToSpeechStart = 'NA';
                 timeToResultStart = 'NA';
                 timeToResultEnd = 'NA';
@@ -472,12 +478,12 @@ var startRecognition = function (intentName, utterText, assertiontext, sla, inte
             retrycount = retry;
             retry = 0;
 
-            if(timeToSpeechStart>sla){
-                slacompliance = 'Bad'
-            }
-            else{
-                slacompliance = 'Good'
-            }
+            // if(timeToSpeechStart>sla){
+            //     slaCompliance = 'Bad'
+            // }
+            // else{
+            //     slaCompliance = 'Good'
+            // }
 
             if(finalTranscripts.toLowerCase().includes(assertiontext)){
                 assertionstatus = 'Pass'
@@ -493,10 +499,29 @@ var startRecognition = function (intentName, utterText, assertiontext, sla, inte
             if(retry === 0){
 
                 scheduler.isOn = false;
-                
-                var table = document.getElementById("results_table");
+
+                resultSet = {
+                    intentName,
+                    utterText,
+                    finalTranscripts,
+                    assertiontext,
+                    assertionstatus,
+                    sla,
+                    timeToSpeechStart,
+                    retrycount
+                }
+
+                const result = await saveResult(resultSet);
+
+                console.log(result);
+
+                console.log(Object.keys(result));
+
+                console.log(Object.values(result));
     
                 var row = table.insertRow(-1);
+
+                //row.id = result.intentName + result.utterText;
 
                 var cell1 = row.insertCell(0);
                 var cell2 = row.insertCell(1);
@@ -508,19 +533,17 @@ var startRecognition = function (intentName, utterText, assertiontext, sla, inte
                 var cell8 = row.insertCell(7);
                 var cell9 = row.insertCell(8);
                 var cell10 = row.insertCell(9);
-                var cell11 = row.insertCell(10);
 
-                cell1.innerHTML = intentName;
-                cell2.innerHTML = utterText;
-                cell3.innerHTML = finalTranscripts;
-                cell4.innerHTML = assertiontext;
-                cell5.innerHTML = assertionstatus;
-                cell6.innerHTML = sla;
-                cell7.innerHTML = slacompliance;
-                cell8.innerHTML = timeToSpeechStart ;
-                cell9.innerHTML = timeToResultStart ;
-                cell10.innerHTML = timeToResultEnd ;
-                cell11.innerHTML = retrycount ;
+                cell1.innerHTML = result.intentName;
+                cell2.innerHTML = result.utterText;
+                cell3.innerHTML = result.min;
+                cell4.innerHTML = result.avg;
+                cell5.innerHTML = result.max;
+                cell6.innerHTML = result.curr;
+                cell7.innerHTML = result.pass;
+                cell8.innerHTML = result.fail;
+                cell9.innerHTML = result.sla;
+                cell10.innerHTML = result.slaCompliance;
 
                 console.log("Test for intent '" + intentName + "' - Utterance '" + utterText + "' completed");
 
@@ -568,9 +591,9 @@ var startRecognition = function (intentName, utterText, assertiontext, sla, inte
         newDate =  new Date(Date.now());
         console.log("Clearing firstEventTimeout as No Match event is triggered");
         clearTimeout(firstEventTimeout);        
-        timeToNoMatch = Math.ceil(newTime - time);
+        timeToNoMatch = ((newTime - time) / 1000).toFixed(3);
 
-        console.log("No speech detected till " + newDate.toLocaleString('en-US', { timeZone: 'Asia/Kolkata' })  + " which is " + timeToNoMatch + " ms since utterance completed");
+        console.log("No speech detected till " + newDate.toLocaleString('en-US', { timeZone: 'Asia/Kolkata' })  + " which is " + timeToNoMatch + " sec since utterance completed");
 
         if(scheduler.isOn){
 
@@ -586,9 +609,9 @@ var startRecognition = function (intentName, utterText, assertiontext, sla, inte
         clearTimeout(firstEventTimeout);        
         
         var completeError = event.error;
-        errorduration = Math.ceil(newTime - time);
+        errorduration = ((newTime - time) / 1000).toFixed(3);
 
-        console.log("Recognition Error: " + completeError + " at "+ newDate.toLocaleString('en-US', { timeZone: 'Asia/Kolkata' })  + " which is " + errorduration + " ms since utterance completed");
+        console.log("Recognition Error: " + completeError + " at "+ newDate.toLocaleString('en-US', { timeZone: 'Asia/Kolkata' })  + " which is " + errorduration + " sec since utterance completed");
 
         if(scheduler.isOn){
 
@@ -596,4 +619,28 @@ var startRecognition = function (intentName, utterText, assertiontext, sla, inte
         }
     }
 };
+
+var saveResult = async function (resultSet){
+
+    const body = JSON.stringify(resultSet)
+    
+    console.log('Printing body')
+
+    console.log(body)
+
+    const response = await fetch('/test/result', {
+
+        method: 'POST',
+
+        body,
+
+        headers: {
+            'Content-Type': 'application/json'
+            //'Content-Type': 'application/x-www-form-urlencoded'
+        }
+        
+    });
+
+    return await response.json();
+}
 

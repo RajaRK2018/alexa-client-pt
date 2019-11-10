@@ -66,141 +66,108 @@
 
         <div id="scheduler" class="container p-5 border border-primary">
 
-            {{!-- <div class="row justify-content-between">
+            <h4>Smart Speakers - End User Performance Evaluator</h4>
 
-                <div class="col-lg-12 m-1 border border-secondary p-2 bg-gradient-primary"> --}}
+            <div class="row justify-content-around p-2 border border-secondary bg-gradient-primary">
 
-                    <h4>Smart Speakers - End User Performance Evaluator</h4>
-
-                    <div class="row justify-content-around p-2 border border-secondary bg-gradient-primary">
-
-                        <div class="col-lg-4">
-                            <label >
-                                <span class="strong">Mic Status: </span>
-                                <span id="micstatus" class="strong"></span>
-                                <div>
-                                <input class="mt-2 p-2 btn btn-md btn-primary" id="resume" value="Check"/>
-                                </div>
-                            </label>
+                <div class="col-lg-4">
+                    <label >
+                        <span class="strong">Mic Status: </span>
+                        <span id="micstatus" class="strong"></span>
+                        <div>
+                        <input class="mt-2 p-2 btn btn-md btn-primary" id="resume" value="Check"/>
                         </div>
+                    </label>
+                </div>
 
-                        <div id="meters" class="mt-4 col-lg-8">
+                <div id="meters" class="mt-4 col-lg-8">
 
-                            <div id="instant">
-                                <div class="label">Instant:</div>
-                                <meter high="0.25" max="1" value="0"></meter>
-                                <div class="value"></div>
+                    <div id="instant">
+                        <div class="label">Instant:</div>
+                        <meter high="0.25" max="1" value="0"></meter>
+                        <div class="value"></div>
+                    </div>
+
+                </div>
+                
+            </div>                    
+
+            <div class="row justify-content-around mt-2 mb-2 p-2 border border-secondary bg-gradient-primary">
+                <input class="btn btn-lg" type="file" id="fileUpload" />
+            </div>
+            
+            <div class="row justify-content-around mt-2 mb-2 p-2 border border-secondary bg-gradient-primary">
+
+                <div class="col-lg-4">
+                    <label>
+                        <span id="intents" class="strong">Intents Detected: </span>
+                    </label>
+                </div>
+
+                <div class="col-lg-4">
+                    <label>
+                        <span class="strong">Wakeup Word</span>
+                        <div>
+                            <input id="wakeupword" value="Alexaa">
+                        </div>
+                    </label>
+                </div>
+
+                <div class="col-lg-4">
+                    <label>
+                        <span class="strong">Iteration</span>
+                        <div>
+                            <input type="number" step="1" id="iteration" value="1">
+                        </div>
+                    </label>
+                </div>
+
+            </div>
+
+            <div class="row justify-content-around mt-2 mb-2 p-2 border border-secondary bg-gradient-primary">
+
+                <div class="col-lg-3">
+                    <label>
+                        <span class="strong">Voice</span>
+                        <div>
+                            <select id="voiceOptions"></select>
+                        </div>
+                    </label>
+                </div>
+
+                <div class="col-lg-3">
+                    <label>
+                            <span>Volume  </span>
+                            <div>
+                            <input type="range" id="volumeSlider" min="0" max="1" step="0.1" value="1">
                             </div>
+                    </label>
+                </div>
 
-                        </div>
-                        
-                    </div>                    
+                <div class="col-lg-3">       
+                    <label>
+                            <span>Rate    </span>
+                            <div>
+                            <input type="range" id="rateSlider" min="0" max="1" step="0.1" value="0.9">
+                            </div>
+                    </label>
+                </div>
 
-                    <div class="row justify-content-around mt-2 mb-2 p-2 border border-secondary bg-gradient-primary">
-                        <input class="btn btn-lg" type="file" id="fileUpload" />
-                    </div>
-                    
-                    <div class="row justify-content-around mt-2 mb-2 p-2 border border-secondary bg-gradient-primary">
-
-                        <div class="col-lg-4">
-                            <label>
-                                <span id="intents" class="strong">Intents Detected: </span>
-                            </label>
-                        </div>
-
-                        <div class="col-lg-4">
-                            <label>
-                                <span class="strong">Wakeup Word</span>
-                                <div>
-                                    <input id="wakeupword" value="Alexaa">
-                                </div>
-                            </label>
-                        </div>
-
-                        <div class="col-lg-4">
-                            <label>
-                                <span class="strong">Iteration</span>
-                                <div>
-                                    <input type="number" step="1" id="iteration" value="1">
-                                </div>
-                            </label>
-                        </div>
-
-                    </div>
-
-                    <div class="row justify-content-around mt-2 mb-2 p-2 border border-secondary bg-gradient-primary">
-
-                        <div class="col-lg-3">
-                            <label>
-                                <span class="strong">Voice</span>
-                                <div>
-                                    <select id="voiceOptions"></select>
-                                </div>
-                            </label>
-                        </div>
-
-                        <div class="col-lg-3">
-                            <label>
-                                    <span>Volume  </span>
-                                    <div>
-                                    <input type="range" id="volumeSlider" min="0" max="1" step="0.1" value="1">
-                                    </div>
-                            </label>
-                        </div>
-
-                        <div class="col-lg-3">       
-                            <label>
-                                    <span>Rate    </span>
-                                    <div>
-                                    <input type="range" id="rateSlider" min="0" max="1" step="0.1" value="0.9">
-                                    </div>
-                            </label>
-                        </div>
-
-                        <div class="col-lg-3">
-                            <label>
-                                    <span>Pitch   </span>
-                                    <div>
-                                    <input type="range" id="pitchSlider" min="0" max="2" step="0.1" value="1">
-                                    </div>
-                            </label>
-                        </div>
+                <div class="col-lg-3">
+                    <label>
+                            <span>Pitch   </span>
+                            <div>
+                            <input type="range" id="pitchSlider" min="0" max="2" step="0.1" value="1">
+                            </div>
+                    </label>
+                </div>
 
 
-                    </div>                           
-                  
-                    <div>
-                        <input class="mt-4 btn btn-lg btn-primary" id="testBtn" value="Test"/>
-                    </div>
-
-                {{!-- </div> --}}
-
-                {{!-- <div class="col-lg-4 m-1 border border-secondary p-5 bg-gradient-primary">
-
-                    <h4>Check your Microphone before testing</h4>
-
-                    <input class="mt-5 mb-5 btn btn-lg btn-primary" id="resume" value="Check"/>
-
-                    <div>
-                        <label class="mt-4 mb-4">
-                            <span class="strong">Status: </span>
-                            <span id="micstatus" class="strong"></span>
-                        </label>
-                    </div>
-
-                    <div id="meters">
-
-                        <div id="instant">
-                            <div class="label">Instant:</div>
-                            <meter high="0.25" max="1" value="0"></meter>
-                            <div class="value"></div>
-                        </div>
-
-                    </div>
-
-                </div> --}}
-
-            {{!-- </div> --}}
+            </div>                           
+            
+            <div>
+                <input class="mt-4 btn btn-lg btn-primary" id="testBtn" value="Test"/>
+            </div>
 
         </div>
 
@@ -211,31 +178,29 @@
                 <table id="results_table_head" class="head">
 
                     <colgroup>
-                        <col style="width:7%">
-                        <col style="width:17%">
+                        <col style="width:16%">
                         <col style="width:20%">
-                        <col style="width:7%">
-                        <col style="width:7%">                    
-                        <col style="width:7%">
-                        <col style="width:7%">
-                        <col style="width:7%">
-                        <col style="width:7%">
-                        <col style="width:7%">
-                        <col style="width:7%">
+                        <col style="width:8%">
+                        <col style="width:8%">
+                        <col style="width:8%">                    
+                        <col style="width:8%">
+                        <col style="width:8%">
+                        <col style="width:8%">
+                        <col style="width:8%">
+                        <col style="width:8%">
                     </colgroup>
 
                     <tr>
                     <th id="uid">Intent Name</th>
                     <th>Utterance</th>
-                    <th>Device Response</th>
-                    <th>Assertion Text</th>
-                    <th>Assertion Status</th>
-                    <th>Response Time SLA</th>
+                    <th>Min</th>
+                    <th>Avg</th>
+                    <th>Max</th>
+                    <th>Last</th>
+                    <th>Pass</th>
+                    <th>Fail</th>
+                    <th>SLA</th>
                     <th>SLA Compliance</th>
-                    <th>Time to Speech Start (ms)</th>
-                    <th>Time to Result Start (ms)</th>
-                    <th>Time to Result End (ms)</th>                    		  
-                    <th>Retry Count</th>
                     </tr>
 
                 </table>
@@ -243,17 +208,16 @@
                     <table id="results_table">
 
                         <colgroup>
-                        <col style="width:7%">
-                        <col style="width:17%">
-                        <col style="width:20%">
-                        <col style="width:7%">
-                        <col style="width:7%">
-                        <col style="width:7%">
-                        <col style="width:7%">
-                        <col style="width:7%">
-                        <col style="width:7%">
-                        <col style="width:7%">
-                        <col style="width:7%">
+                            <col style="width:16%">
+                            <col style="width:20%">
+                            <col style="width:8%">
+                            <col style="width:8%">
+                            <col style="width:8%">                    
+                            <col style="width:8%">
+                            <col style="width:8%">
+                            <col style="width:8%">
+                            <col style="width:8%">
+                            <col style="width:8%">
                         </colgroup>
 
                     </table>
