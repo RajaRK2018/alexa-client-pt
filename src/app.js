@@ -1,25 +1,27 @@
 const path = require('path');
 const express = require('express');
-const hbs = require('hbs');
-// const bodyParser = require('body-parser');
+const ejs = require('ejs');
+require('./db/mongoose');
+const userRouter = require('./routers/user');
+const scriptRouter = require('./routers/script');
+const scenarioRouter = require('./routers/scenario');
+const resultRouter = require('./routers/result');
 
 const app = express();
-app.use(express.json());
-// app.use(bodyParser.urlencoded({ extended: true }));
-
 const port = process.env.PORT || 3000;
 
-const publicDir = path.join(__dirname, '../public');
-const viewDir = path.join(__dirname, '../templates/views')
+app.use(express.json());
+// app.use(userRouter);
+// app.use(scriptRouter);
+// app.use(scenarioRouter);
+// app.use(resultRouter);
 
-app.set('view engine', 'hbs');
-app.set('views', viewDir)
+const publicDir = path.join(__dirname, '../public');
 app.use(express.static(publicDir));
 
-// const mongodb = require('mongodb');
-// const mongoClient = mongodb.MongoClient;
-// const connectionURL = 'mongodb://127.0.0.1:27017';
-// const databaseName = 'alexa-client-pt-db'
+const viewDir = path.join(__dirname, '../templates/views');
+app.set('views', viewDir);
+app.set('view engine', 'ejs');
 
 var results = []
 
@@ -211,7 +213,6 @@ app.listen(port, () => {
 })
 
 /*
-
 mongoClient.connect(connectionURL, { useNewUrlParser: true, useUnifiedTopology: true }, (error, client) => {
 
     if(error){
@@ -241,7 +242,6 @@ mongoClient.connect(connectionURL, { useNewUrlParser: true, useUnifiedTopology: 
     })
 
 })
-
 */
 
 //git config core.autocrlf true

@@ -32,7 +32,7 @@ var voiceOptions = document.getElementById('voiceOptions');
 var volumeSlider = document.getElementById('volumeSlider');
 var rateSlider = document.getElementById('rateSlider');
 var pitchSlider = document.getElementById('pitchSlider');
-var wakeupword = document.getElementById('wakeupword');
+var wakeword = document.getElementById('wakeword');
 
 var testBtn = document.getElementById('testBtn');
 var voiceMap = [];
@@ -122,6 +122,7 @@ function handleFile() {
 
                 intents[i].push(utterances[j]);
             }
+
         }   
     };
 
@@ -155,7 +156,7 @@ testBtn.addEventListener('click', function(){
                 testBtn.disabled = true;
 
                 iteration = document.getElementById('iteration');
-                wakeupword = document.getElementById('wakeupword');
+                wakeword = document.getElementById('wakeword');
 
                 console.log('Testing started... Iteration Count: ' + iteration.value);
 
@@ -269,12 +270,12 @@ function Scheduler(){
 
 var test = function (intentName, utterText, intentArrLen, assertiontext, sla, currUtterArrLen) {
 
-    var wakeup = new SpeechSynthesisUtterance();
-    wakeup.voice = voiceMap[voiceOptions.value]; 
-    wakeup.volume = volumeSlider.value;
-    wakeup.rate = rateSlider.value;
-    wakeup.pitch = pitchSlider.value;
-    wakeup.text = wakeupword.value;
+    var wake = new SpeechSynthesisUtterance();
+    wake.voice = voiceMap[voiceOptions.value]; 
+    wake.volume = volumeSlider.value;
+    wake.rate = rateSlider.value;
+    wake.pitch = pitchSlider.value;
+    wake.text = wakeword.value;
 
     var msg = new SpeechSynthesisUtterance();
     msg.voice = voiceMap[voiceOptions.value]; 
@@ -286,11 +287,11 @@ var test = function (intentName, utterText, intentArrLen, assertiontext, sla, cu
     date =  new Date(Date.now());
     console.log("Starting test for intent'" + intentName + "', Utterance '" +  utterText + "' Time: " + date.toLocaleString('en-US', { timeZone: 'Asia/Kolkata' }));
     
-    window.speechSynthesis.speak(wakeup);
+    window.speechSynthesis.speak(wake);
 
-    wakeup.onend = setTimeout(() => {
+    wake.onend = setTimeout(() => {
 
-            console.log("Delay after wake word");
+            // console.log("Delay after wake word");
     
             window.speechSynthesis.speak(msg);
     
@@ -330,7 +331,7 @@ var startRecognition = function (intentName, utterText, assertiontext, sla, inte
     speechRecognizer.start();
     isRecognizerStart = true;
 
-    console.log("Click Allow if prompted for using Mic");
+    // console.log("Click Allow if prompted for using Mic");
 
     firstEventTimeout = setTimeout(() => {
 
@@ -346,7 +347,7 @@ var startRecognition = function (intentName, utterText, assertiontext, sla, inte
 
         newTime = performance.now();
         newDate =  new Date(Date.now());
-        console.log("Clearing firstEventTimeout as SpeechStart event is triggered");
+        // console.log("Clearing firstEventTimeout as SpeechStart event is triggered");
         clearTimeout(firstEventTimeout);
         isSpeechStart = true;
         timeToSpeechStart = ((newTime - time) / 1000).toFixed(3);
@@ -369,7 +370,7 @@ var startRecognition = function (intentName, utterText, assertiontext, sla, inte
         if(resultCounter === 0){
             resultStartTime = performance.now();
             newDate =  new Date(Date.now());
-            console.log("Clearing resultRecogTimeout as Result event is triggered");
+            // console.log("Clearing resultRecogTimeout as Result event is triggered");
             clearTimeout(resultRecogTimeout);
             isResult = true;
             isResultStop = false;
@@ -392,7 +393,7 @@ var startRecognition = function (intentName, utterText, assertiontext, sla, inte
 
         for(var i = event.resultIndex; i < event.results.length; i++){
             
-            console.log("Clearing resultPauseTimeout as Result FOR loop started");
+            // console.log("Clearing resultPauseTimeout as Result FOR loop started");
             clearTimeout(resultPauseTimeout);
 
             var transcript = event.results[i][0].transcript;
@@ -403,7 +404,8 @@ var startRecognition = function (intentName, utterText, assertiontext, sla, inte
                 resultEndTime = performance.now();                
                 resultEndDate =  new Date(Date.now());
                 timeToResultEnd = ((resultEndTime - time) / 1000).toFixed(3);
-                finalTranscripts += transcript;console.log("Latest Result event for " + utterText + " completed at " + newDate.toLocaleString('en-US', { timeZone: 'Asia/Kolkata' }) + " which is " + timeToResultEnd + " sec since utterance completed");                
+                finalTranscripts += transcript;
+                console.log("Latest Result event for " + utterText + " completed at " + newDate.toLocaleString('en-US', { timeZone: 'Asia/Kolkata' }) + " which is " + timeToResultEnd + " sec since utterance completed");                
             }
             
             else{
@@ -513,11 +515,11 @@ var startRecognition = function (intentName, utterText, assertiontext, sla, inte
 
                 const result = await saveResult(resultSet);
 
-                console.log(result);
+                // console.log(result);
 
-                console.log(Object.keys(result));
+                // console.log(Object.keys(result));
 
-                console.log(Object.values(result));
+                // console.log(Object.values(result));
 
                 var rowid = result.intentName.concat(" - ", result.utterText);
 
@@ -558,7 +560,7 @@ var startRecognition = function (intentName, utterText, assertiontext, sla, inte
 
                     if (rows[r].id === rowid){
 
-                        console.log(rows[r]);
+                        // console.log(rows[r]);
 
                         var cells = rows[r].getElementsByTagName("td");
 
@@ -591,7 +593,7 @@ var startRecognition = function (intentName, utterText, assertiontext, sla, inte
                 timeToResultEnd = 0;
                 timeToSpeechEnd = 0;
                 errorduration = 0;
-                isRecognizerSt = true;
+                isRecognizerStart = true;
                 resultCounter = 0;
 
                 scheduler.next(intentArrLen, currUtterArrLen, test);
@@ -657,9 +659,9 @@ var saveResult = async function (resultSet){
 
     const body = JSON.stringify(resultSet)
     
-    console.log('Printing body')
+    // console.log('Printing body')
 
-    console.log(body)
+    // console.log(body)
 
     const response = await fetch('/test/result', {
 
