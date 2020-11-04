@@ -123,6 +123,8 @@ function handleFile() {
                 intents[i].push(utterances[j]);
             }
 
+            // console.log(intents[i]);
+
         }   
     };
 
@@ -287,12 +289,13 @@ var test = function (intentName, utterText, intentArrLen, assertiontext, sla, cu
     date =  new Date(Date.now());
     console.log("Starting test for intent'" + intentName + "', Utterance '" +  utterText + "' Time: " + date.toLocaleString('en-US', { timeZone: 'Asia/Kolkata' }));
     
+    // window.speechSynthesis.cancel();
     window.speechSynthesis.speak(wake);
 
     wake.onend = setTimeout(() => {
 
             // console.log("Delay after wake word");
-    
+            // window.speechSynthesis.cancel();    
             window.speechSynthesis.speak(msg);
     
     }, 1000);
